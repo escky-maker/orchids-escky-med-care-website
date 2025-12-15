@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe, PLANS, PlanId } from "@/lib/stripe";
+import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,11 +39,16 @@ export async function POST(req: NextRequest) {
       expand: ["latest_invoice.payment_intent"],
     });
 
-    const invoice = subscription.latest_invoice as { payment_intent: { client_secret: string } };
+    const invoice = subscription.latest_invoice as Stripe.Invoice;
+    const paymentIntent = invoice.payment_intent as Stripe.PaymentIntent;
+    
+    if (!paymentIntent?.client_secret) {
+      throw new Error("Failed to get payment intent client secret");
+    }
     
     return NextResponse.json({
       subscriptionId: subscription.id,
-      clientSecret: invoice.payment_intent.client_secret,
+      clientSecret: paymentIntent.client_secret,
       customerId: customer.id,
     });
   } catch (error) {
