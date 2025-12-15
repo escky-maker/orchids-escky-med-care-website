@@ -261,6 +261,9 @@ export default function Home() {
           <p className="text-sm text-slate-600 text-center max-w-2xl">
             Evidence-based maternal and child health resources. Always consult a healthcare provider for personalized advice.
           </p>
+          <p className="text-sm text-slate-600">
+            Contact: <a href="mailto:tendwaescriva4@gmail.com" className="text-rose-600 hover:text-rose-700 font-semibold">tendwaescriva4@gmail.com</a>
+          </p>
         </div>
       </footer>
     </div>
