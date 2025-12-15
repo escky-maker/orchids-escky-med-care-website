@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import {
   Heart,
   Calendar,
@@ -11,10 +12,14 @@ import {
   Clock,
   Pill,
   Baby,
+  Bell,
+  FileSearch,
+  Lightbulb,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const visitSchedule = [
   { week: "8-10", visit: "First prenatal visit", description: "Confirmation of pregnancy, initial assessment, dating ultrasound" },
@@ -49,6 +54,63 @@ const labTests = [
   { name: "Group B Strep", timing: "36-37 weeks", purpose: "Prevent newborn infection" },
 ];
 
+const testInterpretations = [
+  {
+    test: "Complete Blood Count (CBC)",
+    normalRange: "Hemoglobin: 11-14 g/dL",
+    abnormalFindings: [
+      {
+        finding: "Low Hemoglobin (<11 g/dL)",
+        interpretation: "Anemia - common in pregnancy due to increased blood volume",
+        solution: "Iron supplementation (30-60mg daily), increase iron-rich foods, vitamin C for absorption",
+      },
+      {
+        finding: "Elevated WBC (>15,000)",
+        interpretation: "Possible infection or inflammatory response",
+        solution: "Further evaluation needed, urinalysis, check for symptoms of infection",
+      },
+    ],
+  },
+  {
+    test: "Glucose Challenge Test",
+    normalRange: "1-hour: <140 mg/dL",
+    abnormalFindings: [
+      {
+        finding: "Elevated glucose (>140 mg/dL)",
+        interpretation: "Possible gestational diabetes mellitus (GDM)",
+        solution: "3-hour glucose tolerance test, dietary modifications, monitor blood sugar, consult endocrinologist if confirmed",
+      },
+    ],
+  },
+  {
+    test: "Urinalysis",
+    normalRange: "No protein, no bacteria",
+    abnormalFindings: [
+      {
+        finding: "Protein in urine",
+        interpretation: "Possible preeclampsia or kidney issues",
+        solution: "Monitor blood pressure, 24-hour urine collection, kidney function tests, close monitoring",
+      },
+      {
+        finding: "Bacteria/Nitrites present",
+        interpretation: "Urinary tract infection (UTI)",
+        solution: "Urine culture, appropriate antibiotics (safe in pregnancy), increase fluid intake",
+      },
+    ],
+  },
+  {
+    test: "Blood Type & Rh Factor",
+    normalRange: "Any blood type",
+    abnormalFindings: [
+      {
+        finding: "Rh-negative mother",
+        interpretation: "Risk of Rh incompatibility if baby is Rh-positive",
+        solution: "RhoGAM injection at 28 weeks and within 72 hours after delivery, monitor antibody levels",
+      },
+    ],
+  },
+];
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -63,6 +125,25 @@ const itemVariants = {
 };
 
 export default function AntenatalPage() {
+  const [missedVisit, setMissedVisit] = useState(false);
+  const [lastVisitDate, setLastVisitDate] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("lastAntenatalVisit");
+    if (stored) {
+      const lastVisit = new Date(stored);
+      const today = new Date();
+      const daysSinceVisit = Math.floor((today.getTime() - lastVisit.getTime()) / (1000 * 60 * 60 * 24));
+      
+      if (daysSinceVisit > 28) {
+        setMissedVisit(true);
+        setLastVisitDate(lastVisit.toLocaleDateString());
+      }
+    } else {
+      localStorage.setItem("lastAntenatalVisit", new Date().toISOString());
+    }
+  }, []);
+
   return (
     <div className="min-h-screen py-8 px-6 lg:px-12">
       <motion.div
@@ -82,6 +163,19 @@ export default function AntenatalPage() {
             </div>
           </div>
         </motion.div>
+
+        {missedVisit && (
+          <motion.div variants={itemVariants} className="mb-6">
+            <Alert className="border-amber-500/50 bg-amber-500/10">
+              <Bell className="h-4 w-4 text-amber-600" />
+              <AlertTitle className="text-amber-600">Clinic Visit Reminder</AlertTitle>
+              <AlertDescription className="text-amber-700">
+                It&apos;s been over 4 weeks since your last clinic visit on {lastVisitDate}. 
+                Please schedule your next prenatal appointment to ensure optimal care for you and your baby.
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
 
         <Tabs defaultValue="schedule" className="space-y-8">
           <motion.div variants={itemVariants}>
@@ -462,6 +556,71 @@ export default function AntenatalPage() {
             </motion.div>
           </TabsContent>
         </Tabs>
+
+        <motion.div variants={itemVariants} className="mt-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileSearch className="w-5 h-5 text-violet-600" />
+                Test Interpretations & Clinical Guidance
+              </CardTitle>
+              <CardDescription>
+                Understanding your prenatal test results, findings, and recommended actions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Accordion type="single" collapsible className="w-full">
+                {testInterpretations.map((test, index) => (
+                  <AccordionItem key={index} value={`test-${index}`}>
+                    <AccordionTrigger className="text-left">
+                      <div className="flex items-center gap-2">
+                        <TestTube className="w-4 h-4 text-violet-600" />
+                        <span className="font-semibold">{test.test}</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-4">
+                        <div className="p-3 bg-emerald-500/10 rounded-lg">
+                          <p className="text-sm font-medium text-emerald-700">Normal Range</p>
+                          <p className="text-sm text-muted-foreground">{test.normalRange}</p>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          {test.abnormalFindings.map((finding, idx) => (
+                            <Card key={idx} className="bg-muted/30">
+                              <CardContent className="p-4 space-y-3">
+                                <div>
+                                  <p className="text-sm font-semibold text-destructive mb-1">Finding</p>
+                                  <p className="text-sm">{finding.finding}</p>
+                                </div>
+                                
+                                <div>
+                                  <p className="text-sm font-semibold text-primary mb-1 flex items-center gap-2">
+                                    <FileSearch className="w-3 h-3" />
+                                    Interpretation
+                                  </p>
+                                  <p className="text-sm text-muted-foreground">{finding.interpretation}</p>
+                                </div>
+                                
+                                <div>
+                                  <p className="text-sm font-semibold text-emerald-600 mb-1 flex items-center gap-2">
+                                    <Lightbulb className="w-3 h-3" />
+                                    Recommended Solutions
+                                  </p>
+                                  <p className="text-sm text-muted-foreground">{finding.solution}</p>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
+        </motion.div>
       </motion.div>
     </div>
   );
