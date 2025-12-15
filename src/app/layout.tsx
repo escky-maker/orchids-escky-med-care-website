@@ -6,6 +6,7 @@ import Script from "next/script";
 import { Sidebar } from "@/components/Sidebar";
 import { ChatBot } from "@/components/ChatBot";
 import { SubscriptionProvider } from "@/context/SubscriptionContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,11 +51,13 @@ export default function RootLayout({
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
         />
         <SubscriptionProvider>
-          <Sidebar />
-          <ChatBot />
-          <main className="lg:ml-72 min-h-screen">
-            {children}
-          </main>
+          <AuthProvider>
+            <Sidebar />
+            <ChatBot />
+            <main className="lg:ml-72 min-h-screen">
+              {children}
+            </main>
+          </AuthProvider>
         </SubscriptionProvider>
       </body>
     </html>
