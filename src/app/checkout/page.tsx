@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { motion } from "framer-motion";
