@@ -16,7 +16,6 @@ import {
   X,
   Moon,
   Sun,
-  Stethoscope,
   ChevronRight,
   Crown,
   Sparkles,
@@ -28,6 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/context/SubscriptionContext";
 import { useAuth } from "@/context/AuthContext";
+import { Logo } from "./Logo";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
@@ -130,9 +130,7 @@ export function Sidebar() {
       <aside className="hidden lg:flex fixed left-0 top-0 h-screen w-72 flex-col bg-sidebar border-r border-sidebar-border">
         <div className="p-6 border-b border-sidebar-border">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-              <Stethoscope className="w-5 h-5 text-primary-foreground" />
-            </div>
+            <Logo className="w-12 h-12" />
             <div>
               <h1 className="font-bold text-lg text-sidebar-foreground">Escky Med Care</h1>
               <p className="text-xs text-muted-foreground">Maternal & Child Health</p>
@@ -202,9 +200,7 @@ export function Sidebar() {
             >
               <div className="p-6 border-b border-sidebar-border flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-3" onClick={() => setIsOpen(false)}>
-                  <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-                    <Stethoscope className="w-5 h-5 text-primary-foreground" />
-                  </div>
+                  <Logo className="w-12 h-12" />
                   <div>
                     <h1 className="font-bold text-lg text-sidebar-foreground">Escky Med Care</h1>
                     <p className="text-xs text-muted-foreground">Maternal & Child Health</p>
