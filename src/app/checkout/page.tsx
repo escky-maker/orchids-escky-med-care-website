@@ -169,7 +169,6 @@ function CheckoutForm({
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
   const [customerId, setCustomerId] = useState<string | null>(null);
