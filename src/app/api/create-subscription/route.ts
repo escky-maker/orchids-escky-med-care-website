@@ -16,23 +16,23 @@ export async function POST(req: NextRequest) {
       metadata: { plan: planId },
     });
 
+    const product = await stripe.products.create({
+      name: plan.name,
+      description: plan.description,
+    });
+
+    const price = await stripe.prices.create({
+      product: product.id,
+      unit_amount: plan.price,
+      currency: "usd",
+      recurring: {
+        interval: plan.interval,
+      },
+    });
+
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
-      items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: plan.name,
-              description: plan.description,
-            },
-            unit_amount: plan.price,
-            recurring: {
-              interval: plan.interval,
-            },
-          },
-        },
-      ],
+      items: [{ price: price.id }],
       payment_behavior: "default_incomplete",
       payment_settings: { save_default_payment_method: "on_subscription" },
       expand: ["latest_invoice.payment_intent"],
