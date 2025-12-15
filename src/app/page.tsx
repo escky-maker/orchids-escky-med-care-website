@@ -9,7 +9,6 @@ import {
   Calculator,
   BookOpen,
   ArrowRight,
-  Stethoscope,
   Calendar,
   Shield,
   Sparkles,
@@ -17,6 +16,7 @@ import {
 import { SearchBar } from "@/components/SearchBar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
 
 const quickLinks = [
   {
@@ -96,9 +96,7 @@ export default function Home() {
           className="relative max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20">
-              <Stethoscope className="w-6 h-6 text-white" />
-            </div>
+            <Logo className="w-14 h-14 drop-shadow-lg" />
             <span className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Escky Med Care</span>
           </motion.div>
 
@@ -255,7 +253,7 @@ export default function Home() {
       <footer className="py-10 px-6 lg:px-12 border-t bg-slate-50">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <Stethoscope className="w-6 h-6 text-rose-600" />
+            <Logo className="w-8 h-8" />
             <span className="font-bold text-lg text-slate-900" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Escky Med Care</span>
           </div>
           <p className="text-sm text-slate-600 text-center max-w-2xl">
