@@ -21,6 +21,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Escky Med Care | Maternal & Child Health",
   description: "Comprehensive maternal and child health platform covering prenatal care through developmental milestones. Evidence-based guidance for every stage of your journey.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({

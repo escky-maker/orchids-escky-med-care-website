@@ -1,0 +1,14 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Simplified version for favicon -->
+  <path d="M100,160 C100,160 50,120 50,90 C50,75 60,65 75,65 C85,65 95,72 100,80 C105,72 115,65 125,65 C140,65 150,75 150,90 C150,120 100,160 100,160 Z" fill="url(#iconGradient)" />
+  
+  <circle cx="100" cy="95" r="12" fill="white" />
+  <ellipse cx="100" cy="115" rx="14" ry="18" fill="white" />
+</svg>
