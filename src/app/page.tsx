@@ -87,7 +87,7 @@ const itemVariants = {
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <section className="relative overflow-hidden bg-gradient-to-br from-orange-600 via-rose-600 to-pink-700 pt-16 pb-24 px-6 lg:px-12">
+      <section className="relative overflow-hidden bg-gradient-to-br from-orange-600 via-rose-600 to-pink-700 dark:from-orange-900 dark:via-rose-900 dark:to-pink-900 pt-16 pb-24 px-6 lg:px-12">
         
         <motion.div
           initial="hidden"
@@ -106,7 +106,7 @@ export default function Home() {
             style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
           >
             Your Complete Guide to{" "}
-            <span className="text-amber-200">Maternal & Child</span> Health
+            <span className="text-amber-200 dark:text-amber-300">Maternal & Child</span> Health
           </motion.h1>
 
           <motion.p
@@ -122,13 +122,13 @@ export default function Home() {
           </motion.div>
 
           <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
-            <Button asChild size="lg" className="bg-white text-rose-700 hover:bg-amber-50 font-bold shadow-lg">
+            <Button asChild size="lg" className="bg-white text-rose-700 hover:bg-amber-50 dark:bg-white dark:text-rose-700 dark:hover:bg-amber-100 font-bold shadow-lg">
               <Link href="/antenatal">
                 Get Started
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white/15 font-bold backdrop-blur-sm">
+            <Button asChild variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white/15 dark:border-white dark:text-white dark:hover:bg-white/20 font-bold backdrop-blur-sm">
               <Link href="/resources">
                 <BookOpen className="w-5 h-5 mr-2" />
                 Browse Resources
@@ -138,7 +138,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-amber-50 to-white">
+      <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-amber-50 to-white dark:from-slate-900 dark:to-slate-800">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -147,8 +147,8 @@ export default function Home() {
           className="max-w-6xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Quick Access</h2>
-            <p className="text-lg text-slate-600 max-w-lg mx-auto">
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900 dark:text-white" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Quick Access</h2>
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-lg mx-auto">
               Navigate directly to the resources you need most
             </p>
           </motion.div>
@@ -179,7 +179,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="py-20 px-6 lg:px-12 bg-white">
+      <section className="py-20 px-6 lg:px-12 bg-white dark:bg-slate-900">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -188,8 +188,8 @@ export default function Home() {
           className="max-w-6xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Why Escky Med Care?</h2>
-            <p className="text-lg text-slate-600 max-w-lg mx-auto">
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900 dark:text-white" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Why Escky Med Care?</h2>
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-lg mx-auto">
               Trusted resources for your family&apos;s health journey
             </p>
           </motion.div>
@@ -202,18 +202,18 @@ export default function Home() {
                 custom={index}
                 className="text-center"
               >
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-rose-100 to-amber-100 flex items-center justify-center mx-auto mb-5 border-2 border-rose-200">
-                  <feature.icon className="w-9 h-9 text-rose-600" />
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-rose-100 to-amber-100 dark:from-rose-900 dark:to-amber-900 flex items-center justify-center mx-auto mb-5 border-2 border-rose-200 dark:border-rose-700">
+                  <feature.icon className="w-9 h-9 text-rose-600 dark:text-rose-400" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3 text-slate-900" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>{feature.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+                <h3 className="text-2xl font-bold mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>{feature.title}</h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </div>
         </motion.div>
       </section>
 
-      <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-white to-amber-50">
+      <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-800">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -222,7 +222,7 @@ export default function Home() {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants}>
-            <Card className="bg-gradient-to-br from-violet-600 to-fuchsia-600 border-0 shadow-2xl">
+            <Card className="bg-gradient-to-br from-violet-600 to-fuchsia-600 dark:from-violet-900 dark:to-fuchsia-900 border-0 shadow-2xl">
               <CardContent className="p-12 md:p-16 text-center">
                 <h2 className="text-3xl md:text-5xl font-extrabold mb-6 text-white" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                   Ready to Start Your Journey?
@@ -232,13 +232,13 @@ export default function Home() {
                   resources to support your family&apos;s health.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button asChild size="lg" className="font-bold bg-white text-fuchsia-700 hover:bg-amber-50 shadow-lg">
+                  <Button asChild size="lg" className="font-bold bg-white text-fuchsia-700 hover:bg-amber-50 dark:bg-white dark:text-fuchsia-700 dark:hover:bg-amber-100 shadow-lg">
                     <Link href="/antenatal">
                       Begin with Antenatal Care
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="font-bold border-2 border-white text-white hover:bg-white/15 backdrop-blur-sm">
+                  <Button asChild variant="outline" size="lg" className="font-bold border-2 border-white text-white hover:bg-white/15 dark:border-white dark:text-white dark:hover:bg-white/20 backdrop-blur-sm">
                     <Link href="/about">
                       Learn About Us
                     </Link>
@@ -250,17 +250,17 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <footer className="py-10 px-6 lg:px-12 border-t bg-slate-50">
+      <footer className="py-10 px-6 lg:px-12 border-t bg-slate-50 dark:bg-slate-950 dark:border-slate-800">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <Logo className="w-8 h-8" />
-            <span className="font-bold text-lg text-slate-900" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Escky Med Care</span>
+            <span className="font-bold text-lg text-slate-900 dark:text-white" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Escky Med Care</span>
           </div>
-          <p className="text-sm text-slate-600 text-center max-w-2xl">
+          <p className="text-sm text-slate-600 dark:text-slate-400 text-center max-w-2xl">
             Evidence-based maternal and child health resources. Always consult a healthcare provider for personalized advice.
           </p>
-          <p className="text-sm text-slate-600">
-            Contact: <a href="mailto:tendwaescriva4@gmail.com" className="text-rose-600 hover:text-rose-700 font-semibold">tendwaescriva4@gmail.com</a>
+          <p className="text-sm text-slate-600 dark:text-slate-400">
+            Contact: <a href="mailto:tendwaescriva4@gmail.com" className="text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 font-semibold">tendwaescriva4@gmail.com</a>
           </p>
         </div>
       </footer>
