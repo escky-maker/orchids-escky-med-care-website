@@ -87,7 +87,7 @@ const itemVariants = {
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90 pt-16 pb-24 px-6 lg:px-12">
+      <section className="relative overflow-hidden bg-gradient-to-br from-orange-600 via-rose-600 to-pink-700 pt-16 pb-24 px-6 lg:px-12">
         
         <motion.div
           initial="hidden"
@@ -96,23 +96,24 @@ export default function Home() {
           className="relative max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20">
               <Stethoscope className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold text-white">Escky Med Care</span>
+            <span className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Escky Med Care</span>
           </motion.div>
 
           <motion.h1
             variants={itemVariants}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-white"
+            className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-white leading-[1.1]"
+            style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
           >
             Your Complete Guide to{" "}
-            <span className="text-emerald-300">Maternal & Child</span> Health
+            <span className="text-amber-200">Maternal & Child</span> Health
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl text-white/90 max-w-2xl mb-10"
+            className="text-lg md:text-xl text-white/95 max-w-2xl mb-10 leading-relaxed"
           >
             From the first prenatal visit to celebrating developmental milestones. 
             Evidence-based guidance for every stage of your parenting journey.
@@ -123,13 +124,13 @@ export default function Home() {
           </motion.div>
 
           <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
+            <Button asChild size="lg" className="bg-white text-rose-700 hover:bg-amber-50 font-bold shadow-lg">
               <Link href="/antenatal">
                 Get Started
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10 font-semibold">
+            <Button asChild variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white/15 font-bold backdrop-blur-sm">
               <Link href="/resources">
                 <BookOpen className="w-5 h-5 mr-2" />
                 Browse Resources
@@ -139,7 +140,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="py-20 px-6 lg:px-12 bg-background">
+      <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-amber-50 to-white">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -148,8 +149,8 @@ export default function Home() {
           className="max-w-6xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Quick Access</h2>
-            <p className="text-lg text-muted-foreground max-w-lg mx-auto">
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Quick Access</h2>
+            <p className="text-lg text-slate-600 max-w-lg mx-auto">
               Navigate directly to the resources you need most
             </p>
           </motion.div>
@@ -158,16 +159,16 @@ export default function Home() {
             {quickLinks.map((link, index) => (
               <motion.div key={link.href} variants={itemVariants} custom={index}>
                 <Link href={link.href}>
-                  <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
-                    <CardHeader className={`${link.color} rounded-t-lg`}>
-                      <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center mb-3">
-                        <link.icon className="w-6 h-6" />
+                  <Card className="h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer border-2 overflow-hidden">
+                    <CardHeader className={`${link.color} rounded-t-lg pb-8`}>
+                      <div className="w-14 h-14 rounded-xl bg-white/25 backdrop-blur-sm flex items-center justify-center mb-4 border border-white/30">
+                        <link.icon className="w-7 h-7" />
                       </div>
-                      <CardTitle className="text-xl font-bold">{link.title}</CardTitle>
-                      <CardDescription className="text-white/90">{link.description}</CardDescription>
+                      <CardTitle className="text-xl font-bold" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>{link.title}</CardTitle>
+                      <CardDescription className="text-white/95 font-medium">{link.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="pt-6">
-                      <span className="text-sm font-semibold text-primary inline-flex items-center">
+                      <span className="text-sm font-bold text-rose-600 inline-flex items-center">
                         Learn more
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </span>
@@ -180,7 +181,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="py-20 px-6 lg:px-12 bg-muted/50">
+      <section className="py-20 px-6 lg:px-12 bg-white">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -189,8 +190,8 @@ export default function Home() {
           className="max-w-6xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Escky Med Care?</h2>
-            <p className="text-lg text-muted-foreground max-w-lg mx-auto">
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Why Escky Med Care?</h2>
+            <p className="text-lg text-slate-600 max-w-lg mx-auto">
               Trusted resources for your family&apos;s health journey
             </p>
           </motion.div>
@@ -203,18 +204,18 @@ export default function Home() {
                 custom={index}
                 className="text-center"
               >
-                <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-8 h-8 text-primary" />
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-rose-100 to-amber-100 flex items-center justify-center mx-auto mb-5 border-2 border-rose-200">
+                  <feature.icon className="w-9 h-9 text-rose-600" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <h3 className="text-2xl font-bold mb-3 text-slate-900" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>{feature.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </div>
         </motion.div>
       </section>
 
-      <section className="py-20 px-6 lg:px-12 bg-background">
+      <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-white to-amber-50">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -223,23 +224,23 @@ export default function Home() {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants}>
-            <Card className="bg-accent">
+            <Card className="bg-gradient-to-br from-violet-600 to-fuchsia-600 border-0 shadow-2xl">
               <CardContent className="p-12 md:p-16 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                <h2 className="text-3xl md:text-5xl font-extrabold mb-6 text-white" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                   Ready to Start Your Journey?
                 </h2>
-                <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
+                <p className="text-lg text-white/95 mb-8 max-w-lg mx-auto leading-relaxed">
                   Access comprehensive guides, interactive tools, and evidence-based 
                   resources to support your family&apos;s health.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button asChild size="lg" className="font-semibold">
+                  <Button asChild size="lg" className="font-bold bg-white text-fuchsia-700 hover:bg-amber-50 shadow-lg">
                     <Link href="/antenatal">
                       Begin with Antenatal Care
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="font-semibold">
+                  <Button asChild variant="outline" size="lg" className="font-bold border-2 border-white text-white hover:bg-white/15 backdrop-blur-sm">
                     <Link href="/about">
                       Learn About Us
                     </Link>
@@ -251,13 +252,13 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <footer className="py-10 px-6 lg:px-12 border-t bg-muted/50">
+      <footer className="py-10 px-6 lg:px-12 border-t bg-slate-50">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <Stethoscope className="w-6 h-6 text-primary" />
-            <span className="font-bold text-lg">Escky Med Care</span>
+            <Stethoscope className="w-6 h-6 text-rose-600" />
+            <span className="font-bold text-lg text-slate-900" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Escky Med Care</span>
           </div>
-          <p className="text-sm text-muted-foreground text-center max-w-2xl">
+          <p className="text-sm text-slate-600 text-center max-w-2xl">
             Evidence-based maternal and child health resources. Always consult a healthcare provider for personalized advice.
           </p>
         </div>
