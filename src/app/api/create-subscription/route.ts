@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe, PLANS, PlanId } from "@/lib/stripe";
-import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,26 +35,20 @@ export async function POST(req: NextRequest) {
       items: [{ price: price.id }],
       payment_behavior: "default_incomplete",
       payment_settings: { save_default_payment_method: "on_subscription" },
-      expand: ["latest_invoice.payment_intent"],
+      expand: ["latest_invoice.confirmation_secret"],
     });
 
-    const invoice = subscription.latest_invoice as Stripe.Invoice & {
-      payment_intent: Stripe.PaymentIntent | null;
+    const invoice = subscription.latest_invoice as { 
+      confirmation_secret?: { client_secret: string } 
     };
     
-    console.log("Subscription created:", subscription.id);
-    console.log("Invoice:", invoice?.id);
-    console.log("Payment Intent:", invoice?.payment_intent);
-    
-    const paymentIntent = invoice?.payment_intent;
-    
-    if (!paymentIntent || typeof paymentIntent === "string" || !paymentIntent.client_secret) {
-      throw new Error(`Payment intent issue: ${JSON.stringify(paymentIntent)}`);
+    if (!invoice?.confirmation_secret?.client_secret) {
+      throw new Error("Failed to get confirmation secret");
     }
     
     return NextResponse.json({
       subscriptionId: subscription.id,
-      clientSecret: paymentIntent.client_secret,
+      clientSecret: invoice.confirmation_secret.client_secret,
       customerId: customer.id,
     });
   } catch (error) {
