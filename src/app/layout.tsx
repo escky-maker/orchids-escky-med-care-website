@@ -7,6 +7,7 @@ import Script from "next/script";
 import { Sidebar } from "@/components/Sidebar";
 import { ChatBot } from "@/components/ChatBot";
 import { SubscriptionProvider } from "@/context/SubscriptionContext";
+import { SplashScreen } from "@/components/SplashScreen";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,6 +51,7 @@ export default function RootLayout({
           data-debug="true"
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
         />
+        <SplashScreen />
         <SubscriptionProvider>
           <Sidebar />
           <ChatBot />
