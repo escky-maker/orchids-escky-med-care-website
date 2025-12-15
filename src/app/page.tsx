@@ -12,6 +12,7 @@ import {
   Calendar,
   Shield,
   Sparkles,
+  Smartphone,
 } from "lucide-react";
 import { SearchBar } from "@/components/SearchBar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -213,7 +214,52 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-800">
+      <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-white to-rose-50 dark:from-slate-900 dark:to-slate-800">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={containerVariants}
+          className="max-w-6xl mx-auto"
+        >
+          <motion.div variants={itemVariants} className="text-center mb-12">
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900 dark:text-white" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+              Take Us With You
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-lg mx-auto">
+              Download our mobile app for on-the-go access to all health resources
+            </p>
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="max-w-3xl mx-auto">
+            <Link href="/app">
+              <Card className="hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer border-2 border-rose-200 dark:border-rose-700 overflow-hidden bg-gradient-to-br from-rose-50 to-amber-50 dark:from-slate-800 dark:to-slate-900">
+                <CardContent className="p-10 md:p-12">
+                  <div className="flex flex-col md:flex-row items-center gap-8">
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Smartphone className="w-10 h-10 text-white" />
+                    </div>
+                    <div className="flex-1 text-center md:text-left">
+                      <h3 className="text-2xl md:text-3xl font-extrabold mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                        Download Escky Med Care App
+                      </h3>
+                      <p className="text-lg text-slate-600 dark:text-slate-300 mb-4">
+                        Available on iOS and Android. Get push notifications, offline access, and personalized health tracking.
+                      </p>
+                      <span className="inline-flex items-center text-rose-600 dark:text-rose-400 font-bold text-lg">
+                        Get the app
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-rose-50 to-amber-50 dark:from-slate-800 dark:to-slate-800">
         <motion.div
           initial="hidden"
           whileInView="visible"
