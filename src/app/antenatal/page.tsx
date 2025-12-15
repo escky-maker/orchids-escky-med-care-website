@@ -20,6 +20,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
 const visitSchedule = [
   { week: "8-10", visit: "First prenatal visit", description: "Confirmation of pregnancy, initial assessment, dating ultrasound" },
@@ -125,24 +128,74 @@ const itemVariants = {
 };
 
 export default function AntenatalPage() {
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
   const [missedVisit, setMissedVisit] = useState(false);
   const [lastVisitDate, setLastVisitDate] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem("lastAntenatalVisit");
-    if (stored) {
-      const lastVisit = new Date(stored);
-      const today = new Date();
-      const daysSinceVisit = Math.floor((today.getTime() - lastVisit.getTime()) / (1000 * 60 * 60 * 24));
-      
-      if (daysSinceVisit > 28) {
-        setMissedVisit(true);
-        setLastVisitDate(lastVisit.toLocaleDateString());
-      }
-    } else {
-      localStorage.setItem("lastAntenatalVisit", new Date().toISOString());
+    if (authLoading) return;
+
+    if (!user) {
+      router.push("/login");
+      return;
     }
-  }, []);
+
+    const fetchLastVisit = async () => {
+      const { data, error } = await supabase
+        .from("clinic_visits")
+        .select("visit_date")
+        .eq("user_id", user.id)
+        .eq("visit_type", "antenatal")
+        .order("visit_date", { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error && error.code !== "PGRST116") {
+        console.error("Error fetching last visit:", error);
+      }
+
+      if (data) {
+        const lastVisit = new Date(data.visit_date);
+        const today = new Date();
+        const daysSinceVisit = Math.floor((today.getTime() - lastVisit.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (daysSinceVisit > 28) {
+          setMissedVisit(true);
+          setLastVisitDate(lastVisit.toLocaleDateString());
+        }
+      } else {
+        const { error: insertError } = await supabase
+          .from("clinic_visits")
+          .insert({
+            user_id: user.id,
+            visit_date: new Date().toISOString(),
+            visit_type: "antenatal",
+            notes: "First visit recorded"
+          });
+
+        if (insertError) {
+          console.error("Error creating first visit:", insertError);
+        }
+      }
+      
+      setLoading(false);
+    };
+
+    fetchLastVisit();
+  }, [user, authLoading, router]);
+
+  if (authLoading || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-rose-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-8 px-6 lg:px-12">
