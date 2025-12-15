@@ -20,9 +20,14 @@ import {
   ChevronRight,
   Crown,
   Sparkles,
+  LogIn,
+  UserPlus,
+  LogOut,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/context/SubscriptionContext";
+import { useAuth } from "@/context/AuthContext";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
@@ -39,6 +44,7 @@ export function Sidebar() {
   const [isDark, setIsDark] = useState(false);
   const pathname = usePathname();
   const { isPremium, isLoading } = useSubscription();
+  const { user, signOut } = useAuth();
 
   const toggleDarkMode = () => {
     setIsDark(!isDark);
@@ -69,6 +75,48 @@ export function Sidebar() {
     );
   };
 
+  const AuthButtons = ({ onClick }: { onClick?: () => void }) => {
+    if (!user) {
+      return (
+        <div className="space-y-2">
+          <Link href="/login" onClick={onClick}>
+            <button className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+              <LogIn className="w-5 h-5" />
+              <span className="font-medium">Sign In</span>
+            </button>
+          </Link>
+          <Link href="/signup" onClick={onClick}>
+            <button className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-border hover:bg-sidebar-accent transition-colors text-sidebar-foreground">
+              <UserPlus className="w-5 h-5" />
+              <span className="font-medium">Sign Up</span>
+            </button>
+          </Link>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2">
+        <Link href="/account" onClick={onClick}>
+          <button className="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-sidebar-accent transition-colors text-sidebar-foreground">
+            <User className="w-5 h-5" />
+            <span className="font-medium truncate">{user.email}</span>
+          </button>
+        </Link>
+        <button
+          onClick={() => {
+            signOut();
+            onClick?.();
+          }}
+          className="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-destructive/10 text-destructive transition-colors"
+        >
+          <LogOut className="w-5 h-5" />
+          <span className="font-medium">Sign Out</span>
+        </button>
+      </div>
+    );
+  };
+
   return (
     <>
       <button
@@ -94,6 +142,10 @@ export function Sidebar() {
 
         <div className="p-4">
           <PremiumButton />
+        </div>
+
+        <div className="p-4 space-y-2">
+          <AuthButtons />
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -169,6 +221,10 @@ export function Sidebar() {
 
               <div className="p-4">
                 <PremiumButton onClick={() => setIsOpen(false)} />
+              </div>
+
+              <div className="p-4 space-y-2">
+                <AuthButtons onClick={() => setIsOpen(false)} />
               </div>
 
               <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
