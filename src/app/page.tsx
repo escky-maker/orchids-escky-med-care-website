@@ -97,7 +97,7 @@ export default function Home() {
             <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center">
               <Stethoscope className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className="text-sm font-medium text-muted-foreground">Escky Med Care</span>
+            <span className="text-2xl font-bold text-foreground">Escky Med Care</span>
           </motion.div>
 
           <motion.h1
