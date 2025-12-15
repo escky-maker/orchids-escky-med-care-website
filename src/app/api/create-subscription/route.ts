@@ -39,11 +39,18 @@ export async function POST(req: NextRequest) {
       expand: ["latest_invoice.payment_intent"],
     });
 
-    const invoice = subscription.latest_invoice as Stripe.Invoice;
-    const paymentIntent = invoice.payment_intent as Stripe.PaymentIntent;
+    const invoice = subscription.latest_invoice as Stripe.Invoice & {
+      payment_intent: Stripe.PaymentIntent | null;
+    };
     
-    if (!paymentIntent?.client_secret) {
-      throw new Error("Failed to get payment intent client secret");
+    console.log("Subscription created:", subscription.id);
+    console.log("Invoice:", invoice?.id);
+    console.log("Payment Intent:", invoice?.payment_intent);
+    
+    const paymentIntent = invoice?.payment_intent;
+    
+    if (!paymentIntent || typeof paymentIntent === "string" || !paymentIntent.client_secret) {
+      throw new Error(`Payment intent issue: ${JSON.stringify(paymentIntent)}`);
     }
     
     return NextResponse.json({
