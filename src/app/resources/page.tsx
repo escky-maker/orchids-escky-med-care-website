@@ -10,12 +10,23 @@ import {
   Globe,
   MessageCircle,
   Mail,
+  Lock,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useSubscription } from "@/context/SubscriptionContext";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import Link from "next/link";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -36,24 +47,28 @@ const blogPosts = [
     excerpt: "What to expect during weeks 1-12 of pregnancy, including common symptoms and important milestones.",
     category: "Pregnancy",
     readTime: "5 min read",
+    premium: false,
   },
   {
     title: "Breastfeeding Basics for New Mothers",
     excerpt: "A comprehensive guide to getting started with breastfeeding, including positions and common challenges.",
     category: "Postnatal",
     readTime: "8 min read",
+    premium: true,
   },
   {
     title: "Your Baby's Sleep Schedule by Age",
     excerpt: "How much sleep your baby needs at each age and tips for establishing healthy sleep habits.",
     category: "Child Health",
     readTime: "6 min read",
+    premium: true,
   },
   {
     title: "Managing Morning Sickness",
     excerpt: "Evidence-based remedies and strategies to cope with nausea during pregnancy.",
     category: "Pregnancy",
     readTime: "4 min read",
+    premium: false,
   },
 ];
 
@@ -109,6 +124,17 @@ const faqs = [
 ];
 
 export default function ResourcesPage() {
+  const { isPremium } = useSubscription();
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+
+  const handlePremiumContent = (isPremiumContent: boolean) => {
+    if (isPremiumContent && !isPremium) {
+      setShowUpgradeDialog(true);
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className="min-h-screen py-8 px-6 lg:px-12">
       <motion.div
@@ -144,8 +170,19 @@ export default function ResourcesPage() {
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
                   {blogPosts.map((post, index) => (
-                    <Card key={index} className="bg-muted/30 hover:shadow-md transition-shadow cursor-pointer">
-                      <CardContent className="p-4">
+                    <Card 
+                      key={index} 
+                      className={`bg-muted/30 hover:shadow-md transition-shadow ${!post.premium || isPremium ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                      onClick={() => handlePremiumContent(post.premium)}
+                    >
+                      <CardContent className="p-4 relative">
+                        {post.premium && (
+                          <div className="absolute top-3 right-3">
+                            <div className="bg-amber-500/10 p-1.5 rounded-full">
+                              <Lock className="w-3 h-3 text-amber-600" />
+                            </div>
+                          </div>
+                        )}
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
                             {post.category}
@@ -176,15 +213,23 @@ export default function ResourcesPage() {
               <CardContent>
                 <div className="grid md:grid-cols-3 gap-4">
                   {[
-                    { title: "Prenatal Yoga Basics", duration: "15:24" },
-                    { title: "Newborn Care 101", duration: "22:18" },
-                    { title: "Breastfeeding Positions", duration: "12:45" },
+                    { title: "Prenatal Yoga Basics", duration: "15:24", premium: false },
+                    { title: "Newborn Care 101", duration: "22:18", premium: true },
+                    { title: "Breastfeeding Positions", duration: "12:45", premium: true },
                   ].map((video, index) => (
                     <div
                       key={index}
-                      className="relative aspect-video bg-muted rounded-xl overflow-hidden group cursor-pointer"
+                      className={`relative aspect-video bg-muted rounded-xl overflow-hidden group ${!video.premium || isPremium ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                      onClick={() => handlePremiumContent(video.premium)}
                     >
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      {video.premium && (
+                        <div className="absolute top-3 right-3 z-10">
+                          <div className="bg-amber-500/90 p-1.5 rounded-full">
+                            <Lock className="w-3 h-3 text-white" />
+                          </div>
+                        </div>
+                      )}
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center group-hover:scale-110 transition-transform">
                           <Video className="w-5 h-5 text-primary-foreground" />
@@ -336,6 +381,34 @@ export default function ResourcesPage() {
           </motion.div>
         </div>
       </motion.div>
+
+      <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="w-5 h-5 text-amber-600" />
+              Premium Content
+            </DialogTitle>
+            <DialogDescription>
+              This content is only available to premium subscribers. Upgrade now to access exclusive articles, videos, and resources.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-4">
+            <Link href="/pricing">
+              <Button className="w-full rounded-xl">
+                Upgrade to Premium
+              </Button>
+            </Link>
+            <Button 
+              variant="outline" 
+              className="w-full rounded-xl"
+              onClick={() => setShowUpgradeDialog(false)}
+            >
+              Maybe Later
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
