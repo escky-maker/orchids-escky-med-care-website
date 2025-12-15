@@ -24,28 +24,32 @@ const quickLinks = [
     icon: Heart,
     title: "Antenatal Care",
     description: "First prenatal visits, nutrition, and screenings",
-    color: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+    color: "bg-rose-500 text-white",
+    borderColor: "border-rose-700",
   },
   {
     href: "/childbirth",
     icon: Baby,
     title: "Childbirth & Postnatal",
     description: "Labor preparation and postpartum recovery",
-    color: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
+    color: "bg-violet-500 text-white",
+    borderColor: "border-violet-700",
   },
   {
     href: "/child-health",
     icon: Activity,
     title: "Child Health",
     description: "Vaccinations, milestones, and growth tracking",
-    color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+    color: "bg-emerald-500 text-white",
+    borderColor: "border-emerald-700",
   },
   {
     href: "/tools",
     icon: Calculator,
     title: "Health Tools",
     description: "Due date calculator, BMI, milestone tracker",
-    color: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+    color: "bg-amber-500 text-white",
+    borderColor: "border-amber-700",
   },
 ];
 
@@ -83,9 +87,7 @@ const itemVariants = {
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-accent/5 to-background pt-16 pb-24 px-6 lg:px-12">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(34,197,94,0.08),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.08),transparent_50%)]" />
+      <section className="relative overflow-hidden bg-primary pt-16 pb-24 px-6 lg:px-12 border-b-8 border-primary-foreground">
         
         <motion.div
           initial="hidden"
@@ -93,43 +95,43 @@ export default function Home() {
           variants={containerVariants}
           className="relative max-w-4xl mx-auto"
         >
-          <motion.div variants={itemVariants} className="flex items-center gap-2 mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center">
-              <Stethoscope className="w-6 h-6 text-primary-foreground" />
+          <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
+            <div className="w-16 h-16 border-4 border-primary-foreground bg-primary-foreground flex items-center justify-center">
+              <Stethoscope className="w-8 h-8 text-primary" strokeWidth={3} />
             </div>
-            <span className="text-2xl font-bold text-foreground">Escky Med Care</span>
+            <span className="text-4xl font-black text-primary-foreground uppercase tracking-wide">Escky Med Care</span>
           </motion.div>
 
           <motion.h1
             variants={itemVariants}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
+            className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight mb-8 text-primary-foreground"
           >
             Your Complete Guide to{" "}
-            <span className="text-primary">Maternal & Child</span> Health
+            <span className="bg-primary-foreground text-primary px-3 py-1 inline-block border-4 border-primary-foreground">Maternal & Child</span> Health
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8"
+            className="text-xl md:text-2xl text-primary-foreground font-bold max-w-2xl mb-10"
           >
             From the first prenatal visit to celebrating developmental milestones. 
             Evidence-based guidance for every stage of your parenting journey.
           </motion.p>
 
-          <motion.div variants={itemVariants} className="mb-8">
+          <motion.div variants={itemVariants} className="mb-10">
             <SearchBar />
           </motion.div>
 
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
-            <Button asChild size="lg" className="rounded-xl">
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-6">
+            <Button asChild size="lg" className="border-4 border-primary-foreground bg-primary-foreground text-primary font-black text-lg px-8 py-6 hover:translate-x-1 hover:translate-y-1 transition-transform shadow-[6px_6px_0_0_rgba(255,255,255,1)]">
               <Link href="/antenatal">
                 Get Started
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-5 h-5 ml-2" strokeWidth={3} />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-xl">
+            <Button asChild variant="outline" size="lg" className="border-4 border-primary-foreground text-primary-foreground font-black text-lg px-8 py-6 hover:translate-x-1 hover:translate-y-1 transition-transform shadow-[6px_6px_0_0_rgba(255,255,255,1)]">
               <Link href="/resources">
-                <BookOpen className="w-4 h-4 mr-2" />
+                <BookOpen className="w-5 h-5 mr-2" strokeWidth={3} />
                 Browse Resources
               </Link>
             </Button>
@@ -137,7 +139,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="py-16 px-6 lg:px-12">
+      <section className="py-20 px-6 lg:px-12 bg-background">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -145,29 +147,29 @@ export default function Home() {
           variants={containerVariants}
           className="max-w-6xl mx-auto"
         >
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Quick Access</h2>
-            <p className="text-muted-foreground max-w-lg mx-auto">
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="text-5xl font-black mb-6 uppercase">Quick Access</h2>
+            <p className="text-xl font-bold text-foreground max-w-lg mx-auto">
               Navigate directly to the resources you need most
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {quickLinks.map((link, index) => (
               <motion.div key={link.href} variants={itemVariants} custom={index}>
                 <Link href={link.href}>
-                  <Card className="h-full hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer border-border/50">
-                    <CardHeader>
-                      <div className={`w-12 h-12 rounded-xl ${link.color} flex items-center justify-center mb-2`}>
-                        <link.icon className="w-6 h-6" />
+                  <Card className="h-full hover:translate-x-2 hover:translate-y-2 transition-transform cursor-pointer border-4 border-foreground shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+                    <CardHeader className={`${link.color} border-b-4 border-foreground`}>
+                      <div className="w-14 h-14 border-4 border-current flex items-center justify-center mb-3">
+                        <link.icon className="w-8 h-8" strokeWidth={3} />
                       </div>
-                      <CardTitle className="text-lg">{link.title}</CardTitle>
-                      <CardDescription>{link.description}</CardDescription>
+                      <CardTitle className="text-2xl font-black">{link.title}</CardTitle>
+                      <CardDescription className="text-white/90 font-bold text-base">{link.description}</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <span className="text-sm font-medium text-primary inline-flex items-center">
+                    <CardContent className="pt-6">
+                      <span className="text-base font-black text-foreground inline-flex items-center uppercase">
                         Learn more
-                        <ArrowRight className="w-3 h-3 ml-1" />
+                        <ArrowRight className="w-4 h-4 ml-2" strokeWidth={3} />
                       </span>
                     </CardContent>
                   </Card>
@@ -178,7 +180,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="py-16 px-6 lg:px-12 bg-muted/30">
+      <section className="py-20 px-6 lg:px-12 bg-muted border-y-8 border-foreground">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -186,14 +188,14 @@ export default function Home() {
           variants={containerVariants}
           className="max-w-6xl mx-auto"
         >
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Escky Med Care?</h2>
-            <p className="text-muted-foreground max-w-lg mx-auto">
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="text-5xl font-black mb-6 uppercase">Why Escky Med Care?</h2>
+            <p className="text-xl font-bold text-foreground max-w-lg mx-auto">
               Trusted resources for your family&apos;s health journey
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-10">
             {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
@@ -201,18 +203,18 @@ export default function Home() {
                 custom={index}
                 className="text-center"
               >
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-8 h-8 text-primary" />
+                <div className="w-20 h-20 border-4 border-foreground bg-primary flex items-center justify-center mx-auto mb-6 shadow-[6px_6px_0_0_rgba(0,0,0,1)]">
+                  <feature.icon className="w-10 h-10 text-primary-foreground" strokeWidth={3} />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <h3 className="text-2xl font-black mb-3 uppercase">{feature.title}</h3>
+                <p className="text-lg font-semibold text-foreground">{feature.description}</p>
               </motion.div>
             ))}
           </div>
         </motion.div>
       </section>
 
-      <section className="py-16 px-6 lg:px-12">
+      <section className="py-20 px-6 lg:px-12 bg-background">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -221,23 +223,23 @@ export default function Home() {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants}>
-            <Card className="bg-gradient-to-br from-primary/10 to-accent/10 border-none">
-              <CardContent className="p-8 md:p-12 text-center">
-                <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            <Card className="bg-accent border-4 border-foreground shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+              <CardContent className="p-12 md:p-16 text-center">
+                <h2 className="text-4xl md:text-5xl font-black mb-6 uppercase">
                   Ready to Start Your Journey?
                 </h2>
-                <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
+                <p className="text-xl font-bold text-foreground mb-8 max-w-lg mx-auto">
                   Access comprehensive guides, interactive tools, and evidence-based 
                   resources to support your family&apos;s health.
                 </p>
-                <div className="flex flex-wrap justify-center gap-4">
-                  <Button asChild size="lg" className="rounded-xl">
+                <div className="flex flex-wrap justify-center gap-6">
+                  <Button asChild size="lg" className="border-4 border-foreground font-black text-lg px-8 py-6 hover:translate-x-1 hover:translate-y-1 transition-transform shadow-[6px_6px_0_0_rgba(0,0,0,1)]">
                     <Link href="/antenatal">
                       Begin with Antenatal Care
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                      <ArrowRight className="w-5 h-5 ml-2" strokeWidth={3} />
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="rounded-xl">
+                  <Button asChild variant="outline" size="lg" className="border-4 border-foreground font-black text-lg px-8 py-6 hover:translate-x-1 hover:translate-y-1 transition-transform shadow-[6px_6px_0_0_rgba(0,0,0,1)]">
                     <Link href="/about">
                       Learn About Us
                     </Link>
@@ -249,13 +251,13 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <footer className="py-8 px-6 lg:px-12 border-t border-border">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <Stethoscope className="w-5 h-5 text-primary" />
-            <span className="font-semibold">Escky Med Care</span>
+      <footer className="py-10 px-6 lg:px-12 border-t-8 border-foreground bg-muted">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <Stethoscope className="w-6 h-6 text-primary" strokeWidth={3} />
+            <span className="font-black text-xl uppercase">Escky Med Care</span>
           </div>
-          <p className="text-sm text-muted-foreground text-center">
+          <p className="text-base font-bold text-foreground text-center max-w-2xl">
             Evidence-based maternal and child health resources. Always consult a healthcare provider for personalized advice.
           </p>
         </div>
