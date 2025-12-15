@@ -23,6 +23,7 @@ import {
   UserPlus,
   LogOut,
   User,
+  Smartphone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/context/SubscriptionContext";
@@ -35,6 +36,7 @@ const navItems = [
   { href: "/childbirth", label: "Childbirth & Postnatal", icon: Baby },
   { href: "/child-health", label: "Child Health", icon: Activity },
   { href: "/tools", label: "Tools", icon: Calculator },
+  { href: "/app", label: "Download App", icon: Smartphone },
   { href: "/resources", label: "Resources", icon: BookOpen },
   { href: "/about", label: "About", icon: Info },
 ];
