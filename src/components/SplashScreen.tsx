@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial, Float } from "@react-three/drei";
+import { Sphere, MeshDistortMaterial, Float } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 import { Stethoscope } from "lucide-react";
 import * as THREE from "three";
@@ -84,7 +84,6 @@ export function SplashScreen() {
               <directionalLight position={[10, 10, 5]} intensity={1} />
               <pointLight position={[-10, -10, -5]} intensity={0.5} color="#ff6b9d" />
               <AnimatedSphere />
-              <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1} />
             </Canvas>
           </div>
 
