@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Loader2, Lock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,8 @@ type Message = {
   content: string;
 };
 
+const FREE_TRIAL_LIMIT = 5;
+
 export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -25,16 +27,34 @@ export function ChatBot() {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [questionCount, setQuestionCount] = useState(0);
   const { isPremium, isLoading: subscriptionLoading } = useSubscription();
+
+  useEffect(() => {
+    const storedCount = localStorage.getItem("chatbot_question_count");
+    if (storedCount) {
+      setQuestionCount(parseInt(storedCount, 10));
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading || !isPremium) return;
+    if (!input.trim() || isLoading) return;
+
+    if (!isPremium && questionCount >= FREE_TRIAL_LIMIT) {
+      return;
+    }
 
     const userMessage = input.trim();
     setInput("");
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
+
+    if (!isPremium) {
+      const newCount = questionCount + 1;
+      setQuestionCount(newCount);
+      localStorage.setItem("chatbot_question_count", newCount.toString());
+    }
 
     try {
       const response = await fetch("/api/chat", {
@@ -62,23 +82,35 @@ export function ChatBot() {
     }
   };
 
-  const PremiumGate = () => (
-    <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
-      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center mb-4">
-        <Lock className="w-8 h-8 text-rose-500" />
+  const PremiumGate = () => {
+    const remainingQuestions = FREE_TRIAL_LIMIT - questionCount;
+    const hasUsedTrial = questionCount >= FREE_TRIAL_LIMIT;
+
+    return (
+      <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center mb-4">
+          <Lock className="w-8 h-8 text-rose-500" />
+        </div>
+        <h3 className="text-lg font-bold text-slate-900 mb-2">
+          {hasUsedTrial ? "Free Trial Ended" : "Premium Feature"}
+        </h3>
+        <p className="text-sm text-slate-600 mb-6">
+          {hasUsedTrial 
+            ? "You've used all 5 free questions. Upgrade to premium for unlimited AI health consultations."
+            : "Try 5 free questions, then upgrade to premium for unlimited access to personalized maternal and child health guidance."}
+        </p>
+        <Link href="/pricing" onClick={() => setIsOpen(false)}>
+          <Button className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white">
+            <Sparkles className="w-4 h-4 mr-2" />
+            Upgrade to Premium
+          </Button>
+        </Link>
       </div>
-      <h3 className="text-lg font-bold text-slate-900 mb-2">Premium Feature</h3>
-      <p className="text-sm text-slate-600 mb-6">
-        Unlock the AI Health Consultation Chatbot with a premium subscription. Get personalized maternal and child health guidance.
-      </p>
-      <Link href="/pricing" onClick={() => setIsOpen(false)}>
-        <Button className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white">
-          <Sparkles className="w-4 h-4 mr-2" />
-          Upgrade to Premium
-        </Button>
-      </Link>
-    </div>
-  );
+    );
+  };
+
+  const canSendMessage = isPremium || questionCount < FREE_TRIAL_LIMIT;
+  const remainingQuestions = FREE_TRIAL_LIMIT - questionCount;
 
   return (
     <>
@@ -111,6 +143,11 @@ export function ChatBot() {
                 </div>
                 <p className="text-sm text-white/90 mt-1">
                   Ask me about maternal & child health
+                  {!isPremium && remainingQuestions > 0 && (
+                    <span className="block text-xs mt-1 text-white/80">
+                      {remainingQuestions} free question{remainingQuestions !== 1 ? 's' : ''} remaining
+                    </span>
+                  )}
                 </p>
               </CardHeader>
               <CardContent className="p-0">
@@ -118,7 +155,7 @@ export function ChatBot() {
                   <div className="flex items-center justify-center py-12">
                     <Loader2 className="w-8 h-8 animate-spin text-rose-500" />
                   </div>
-                ) : !isPremium ? (
+                ) : !isPremium && questionCount >= FREE_TRIAL_LIMIT ? (
                   <PremiumGate />
                 ) : (
                   <>
@@ -161,13 +198,13 @@ export function ChatBot() {
                         <Input
                           value={input}
                           onChange={(e) => setInput(e.target.value)}
-                          placeholder="Type your question..."
-                          disabled={isLoading}
+                          placeholder={canSendMessage ? "Type your question..." : "Upgrade to ask more questions"}
+                          disabled={isLoading || !canSendMessage}
                           className="flex-1"
                         />
                         <Button
                           type="submit"
-                          disabled={isLoading || !input.trim()}
+                          disabled={isLoading || !input.trim() || !canSendMessage}
                           className="bg-rose-500 hover:bg-rose-600 text-white"
                         >
                           <Send className="w-4 h-4" />
