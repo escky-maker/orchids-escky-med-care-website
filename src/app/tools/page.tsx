@@ -8,12 +8,22 @@ import {
   Activity,
   Target,
   ArrowRight,
+  Lock,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useSubscription } from "@/context/SubscriptionContext";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import Link from "next/link";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -101,6 +111,8 @@ function DueDateCalculator() {
 }
 
 function BMICalculator() {
+  const { isPremium } = useSubscription();
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [prePregnancyWeight, setPrePregnancyWeight] = useState("");
@@ -113,6 +125,11 @@ function BMICalculator() {
   } | null>(null);
 
   const calculateBMI = () => {
+    if (!isPremium) {
+      setShowUpgradeDialog(true);
+      return;
+    }
+
     const h = parseFloat(height) / 100;
     const ppw = parseFloat(prePregnancyWeight);
     const w = parseFloat(weight);
@@ -146,93 +163,139 @@ function BMICalculator() {
   };
 
   return (
-    <Card id="bmi">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Activity className="w-5 h-5 text-primary" />
-          Pregnancy BMI Calculator
-        </CardTitle>
-        <CardDescription>
-          Calculate your pre-pregnancy BMI and recommended weight gain.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="height">Height (cm)</Label>
-            <Input
-              id="height"
-              type="number"
-              placeholder="165"
-              value={height}
-              onChange={(e) => setHeight(e.target.value)}
-            />
+    <>
+      <Card id="bmi" className={!isPremium ? "relative" : ""}>
+        {!isPremium && (
+          <div className="absolute top-3 right-3 z-10">
+            <div className="bg-amber-500/90 p-2 rounded-full">
+              <Lock className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="preweight">Pre-Pregnancy Weight (kg)</Label>
-            <Input
-              id="preweight"
-              type="number"
-              placeholder="60"
-              value={prePregnancyWeight}
-              onChange={(e) => setPrePregnancyWeight(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="weight">Current Weight (kg)</Label>
-            <Input
-              id="weight"
-              type="number"
-              placeholder="65"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="weeks">Weeks Pregnant</Label>
-            <Input
-              id="weeks"
-              type="number"
-              placeholder="20"
-              value={weeksPregnant}
-              onChange={(e) => setWeeksPregnant(e.target.value)}
-            />
-          </div>
-        </div>
-        <Button onClick={calculateBMI} className="rounded-xl">
-          Calculate
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
-        
-        {result && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-4 p-4 bg-primary/10 rounded-xl space-y-2"
-          >
+        )}
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Activity className="w-5 h-5 text-primary" />
+            Pregnancy BMI Calculator
+            {!isPremium && (
+              <span className="ml-auto text-xs bg-amber-500/10 text-amber-600 px-2 py-1 rounded-full">
+                Premium Only
+              </span>
+            )}
+          </CardTitle>
+          <CardDescription>
+            Calculate your pre-pregnancy BMI and recommended weight gain.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={!isPremium ? "opacity-50 pointer-events-none" : ""}>
             <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Pre-Pregnancy BMI</p>
-                <p className="text-xl font-bold text-primary">{result.bmi}</p>
-                <p className="text-sm text-muted-foreground">{result.category}</p>
+              <div className="space-y-2">
+                <Label htmlFor="height">Height (cm)</Label>
+                <Input
+                  id="height"
+                  type="number"
+                  placeholder="165"
+                  value={height}
+                  onChange={(e) => setHeight(e.target.value)}
+                />
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Recommended Total Gain</p>
-                <p className="text-xl font-bold text-primary">{result.recommendedGain}</p>
+              <div className="space-y-2">
+                <Label htmlFor="preweight">Pre-Pregnancy Weight (kg)</Label>
+                <Input
+                  id="preweight"
+                  type="number"
+                  placeholder="60"
+                  value={prePregnancyWeight}
+                  onChange={(e) => setPrePregnancyWeight(e.target.value)}
+                />
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Current Weight Gain</p>
-                <p className="text-xl font-bold">{result.currentGain} kg ({Math.round(result.currentGain * 2.205)} lbs)</p>
+              <div className="space-y-2">
+                <Label htmlFor="weight">Current Weight (kg)</Label>
+                <Input
+                  id="weight"
+                  type="number"
+                  placeholder="65"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="weeks">Weeks Pregnant</Label>
+                <Input
+                  id="weeks"
+                  type="number"
+                  placeholder="20"
+                  value={weeksPregnant}
+                  onChange={(e) => setWeeksPregnant(e.target.value)}
+                />
               </div>
             </div>
-          </motion.div>
-        )}
-      </CardContent>
-    </Card>
+          </div>
+          <Button onClick={calculateBMI} className="rounded-xl">
+            Calculate
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+          
+          {result && isPremium && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 p-4 bg-primary/10 rounded-xl space-y-2"
+            >
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Pre-Pregnancy BMI</p>
+                  <p className="text-xl font-bold text-primary">{result.bmi}</p>
+                  <p className="text-sm text-muted-foreground">{result.category}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Recommended Total Gain</p>
+                  <p className="text-xl font-bold text-primary">{result.recommendedGain}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Current Weight Gain</p>
+                  <p className="text-xl font-bold">{result.currentGain} kg ({Math.round(result.currentGain * 2.205)} lbs)</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="w-5 h-5 text-amber-600" />
+              Premium Tool
+            </DialogTitle>
+            <DialogDescription>
+              The Pregnancy BMI Calculator is only available to premium subscribers. Upgrade now to access this tool and other exclusive features.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-4">
+            <Link href="/pricing">
+              <Button className="w-full rounded-xl">
+                Upgrade to Premium
+              </Button>
+            </Link>
+            <Button 
+              variant="outline" 
+              className="w-full rounded-xl"
+              onClick={() => setShowUpgradeDialog(false)}
+            >
+              Maybe Later
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
 function MilestoneTracker() {
+  const { isPremium } = useSubscription();
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [childAge, setChildAge] = useState("");
   const [milestones, setMilestones] = useState<string[]>([]);
 
@@ -247,6 +310,11 @@ function MilestoneTracker() {
   };
 
   const checkMilestones = () => {
+    if (!isPremium) {
+      setShowUpgradeDialog(true);
+      return;
+    }
+
     const age = childAge;
     if (milestoneData[age]) {
       setMilestones(milestoneData[age]);
@@ -254,72 +322,116 @@ function MilestoneTracker() {
   };
 
   return (
-    <Card id="milestone-tracker">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Target className="w-5 h-5 text-primary" />
-          Milestone Tracker
-        </CardTitle>
-        <CardDescription>
-          Check expected developmental milestones for your child&apos;s age.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label>Child&apos;s Age (months)</Label>
-          <Select value={childAge} onValueChange={setChildAge}>
-            <SelectTrigger className="max-w-xs">
-              <SelectValue placeholder="Select age" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="2">2 months</SelectItem>
-              <SelectItem value="4">4 months</SelectItem>
-              <SelectItem value="6">6 months</SelectItem>
-              <SelectItem value="9">9 months</SelectItem>
-              <SelectItem value="12">12 months</SelectItem>
-              <SelectItem value="18">18 months</SelectItem>
-              <SelectItem value="24">24 months</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <Button onClick={checkMilestones} className="rounded-xl">
-          Check Milestones
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
-        
-        {milestones.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-4"
-          >
-            <p className="text-sm text-muted-foreground mb-3">
-              Expected milestones at {childAge} months:
-            </p>
-            <div className="grid md:grid-cols-2 gap-2">
-              {milestones.map((milestone, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg"
-                >
-                  <input
-                    type="checkbox"
-                    id={`milestone-${index}`}
-                    className="w-4 h-4 rounded border-primary text-primary focus:ring-primary"
-                  />
-                  <label htmlFor={`milestone-${index}`} className="text-sm cursor-pointer">
-                    {milestone}
-                  </label>
-                </div>
-              ))}
+    <>
+      <Card id="milestone-tracker" className={!isPremium ? "relative" : ""}>
+        {!isPremium && (
+          <div className="absolute top-3 right-3 z-10">
+            <div className="bg-amber-500/90 p-2 rounded-full">
+              <Lock className="w-4 h-4 text-white" />
             </div>
-            <p className="text-xs text-muted-foreground mt-4">
-              Note: Every child develops at their own pace. Consult your pediatrician if you have concerns.
-            </p>
-          </motion.div>
+          </div>
         )}
-      </CardContent>
-    </Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Target className="w-5 h-5 text-primary" />
+            Milestone Tracker
+            {!isPremium && (
+              <span className="ml-auto text-xs bg-amber-500/10 text-amber-600 px-2 py-1 rounded-full">
+                Premium Only
+              </span>
+            )}
+          </CardTitle>
+          <CardDescription>
+            Check expected developmental milestones for your child&apos;s age.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={!isPremium ? "opacity-50 pointer-events-none" : ""}>
+            <div className="space-y-2">
+              <Label>Child&apos;s Age (months)</Label>
+              <Select value={childAge} onValueChange={setChildAge}>
+                <SelectTrigger className="max-w-xs">
+                  <SelectValue placeholder="Select age" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="2">2 months</SelectItem>
+                  <SelectItem value="4">4 months</SelectItem>
+                  <SelectItem value="6">6 months</SelectItem>
+                  <SelectItem value="9">9 months</SelectItem>
+                  <SelectItem value="12">12 months</SelectItem>
+                  <SelectItem value="18">18 months</SelectItem>
+                  <SelectItem value="24">24 months</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <Button onClick={checkMilestones} className="rounded-xl">
+            Check Milestones
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+          
+          {milestones.length > 0 && isPremium && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4"
+            >
+              <p className="text-sm text-muted-foreground mb-3">
+                Expected milestones at {childAge} months:
+              </p>
+              <div className="grid md:grid-cols-2 gap-2">
+                {milestones.map((milestone, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg"
+                  >
+                    <input
+                      type="checkbox"
+                      id={`milestone-${index}`}
+                      className="w-4 h-4 rounded border-primary text-primary focus:ring-primary"
+                    />
+                    <label htmlFor={`milestone-${index}`} className="text-sm cursor-pointer">
+                      {milestone}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground mt-4">
+                Note: Every child develops at their own pace. Consult your pediatrician if you have concerns.
+              </p>
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="w-5 h-5 text-amber-600" />
+              Premium Tool
+            </DialogTitle>
+            <DialogDescription>
+              The Milestone Tracker is only available to premium subscribers. Upgrade now to access this tool and other exclusive features.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-4">
+            <Link href="/pricing">
+              <Button className="w-full rounded-xl">
+                Upgrade to Premium
+              </Button>
+            </Link>
+            <Button 
+              variant="outline" 
+              className="w-full rounded-xl"
+              onClick={() => setShowUpgradeDialog(false)}
+            >
+              Maybe Later
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
