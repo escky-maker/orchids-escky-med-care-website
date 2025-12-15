@@ -96,12 +96,12 @@ const trustedSources = [
 ];
 
 const downloadableResources = [
-  { title: "Prenatal Visit Checklist", type: "PDF", size: "245 KB" },
-  { title: "Baby Milestone Tracker", type: "PDF", size: "312 KB" },
-  { title: "Vaccination Schedule Card", type: "PDF", size: "189 KB" },
-  { title: "Postpartum Recovery Guide", type: "PDF", size: "428 KB" },
-  { title: "Breastfeeding Log Template", type: "PDF", size: "156 KB" },
-  { title: "Baby Sleep Tracker", type: "PDF", size: "198 KB" },
+  { title: "Prenatal Visit Checklist", type: "PDF", size: "245 KB", premium: false },
+  { title: "Baby Milestone Tracker", type: "PDF", size: "312 KB", premium: true },
+  { title: "Vaccination Schedule Card", type: "PDF", size: "189 KB", premium: false },
+  { title: "Postpartum Recovery Guide", type: "PDF", size: "428 KB", premium: true },
+  { title: "Breastfeeding Log Template", type: "PDF", size: "156 KB", premium: true },
+  { title: "Baby Sleep Tracker", type: "PDF", size: "198 KB", premium: true },
 ];
 
 const faqs = [
@@ -262,8 +262,16 @@ export default function ResourcesPage() {
                   {downloadableResources.map((resource, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+                      className={`flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors ${!resource.premium || isPremium ? 'cursor-pointer' : 'cursor-not-allowed'} relative`}
+                      onClick={() => handlePremiumContent(resource.premium)}
                     >
+                      {resource.premium && (
+                        <div className="absolute top-2 right-2">
+                          <div className="bg-amber-500/90 p-1 rounded-full">
+                            <Lock className="w-3 h-3 text-white" />
+                          </div>
+                        </div>
+                      )}
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center">
                           <FileText className="w-5 h-5 text-destructive" />
