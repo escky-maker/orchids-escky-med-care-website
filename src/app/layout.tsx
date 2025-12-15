@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { VisualEditsMessenger } from "orchids-visual-edits";
 import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
 import { Sidebar } from "@/components/Sidebar";
@@ -59,7 +58,6 @@ export default function RootLayout({
             {children}
           </main>
         </SubscriptionProvider>
-        <VisualEditsMessenger />
       </body>
     </html>
   );
