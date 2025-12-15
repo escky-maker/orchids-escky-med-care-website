@@ -18,8 +18,11 @@ import {
   Sun,
   Stethoscope,
   ChevronRight,
+  Crown,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSubscription } from "@/context/SubscriptionContext";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
@@ -35,10 +38,35 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const pathname = usePathname();
+  const { isPremium, isLoading } = useSubscription();
 
   const toggleDarkMode = () => {
     setIsDark(!isDark);
     document.documentElement.classList.toggle("dark");
+  };
+
+  const PremiumButton = ({ onClick }: { onClick?: () => void }) => {
+    if (isLoading) return null;
+
+    if (isPremium) {
+      return (
+        <Link href="/account" onClick={onClick}>
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800 hover:from-amber-200 hover:to-yellow-200 transition-colors">
+            <Crown className="w-5 h-5 text-amber-600" />
+            <span className="font-medium">Premium Member</span>
+          </div>
+        </Link>
+      );
+    }
+
+    return (
+      <Link href="/pricing" onClick={onClick}>
+        <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 text-white hover:from-rose-600 hover:to-pink-700 transition-colors shadow-lg">
+          <Sparkles className="w-5 h-5" />
+          <span className="font-medium">Go Premium</span>
+        </div>
+      </Link>
+    );
   };
 
   return (
@@ -62,6 +90,10 @@ export function Sidebar() {
               <p className="text-xs text-muted-foreground">Maternal & Child Health</p>
             </div>
           </Link>
+        </div>
+
+        <div className="p-4">
+          <PremiumButton />
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -133,6 +165,10 @@ export function Sidebar() {
                 >
                   <X className="w-5 h-5" />
                 </button>
+              </div>
+
+              <div className="p-4">
+                <PremiumButton onClick={() => setIsOpen(false)} />
               </div>
 
               <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
