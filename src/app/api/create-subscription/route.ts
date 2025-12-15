@@ -47,8 +47,9 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("Create subscription error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to create subscription" },
+      { error: "Failed to create subscription", details: message },
       { status: 500 }
     );
   }
