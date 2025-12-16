@@ -65,16 +65,25 @@ export function ChatBot() {
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to get response");
-
       const data = await response.json();
-      setMessages((prev) => [...prev, { role: "assistant", content: data.message }]);
-    } catch {
+
+      if (!response.ok) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: data.error || "I'm having trouble connecting right now. Please try again in a moment.",
+          },
+        ]);
+      } else {
+        setMessages((prev) => [...prev, { role: "assistant", content: data.message }]);
+      }
+    } catch (error) {
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "I'm sorry, I encountered an error. Please try again or contact support if the issue persists.",
+          content: "I'm having trouble connecting right now. Please check your internet connection and try again.",
         },
       ]);
     } finally {
