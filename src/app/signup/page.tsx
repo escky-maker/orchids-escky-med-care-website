@@ -38,11 +38,13 @@ export default function SignUpPage() {
       return;
     }
 
-    const { error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
-      password,
       options: {
-        emailRedirectTo: `${window.location.origin}/`,
+        shouldCreateUser: true,
+        data: {
+          password: password,
+        },
       },
     });
 
@@ -50,6 +52,30 @@ export default function SignUpPage() {
       setError(error.message);
       setLoading(false);
     } else {
+      setStep("verify");
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const { data, error } = await supabase.auth.verifyOtp({
+      email,
+      token: verificationCode,
+      type: "email",
+    });
+
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+    } else if (data.user) {
+      await supabase.auth.updateUser({
+        password: password,
+      });
+      
       setSuccess(true);
       setTimeout(() => {
         router.push("/");
