@@ -1,7 +1,6 @@
 import { FlatCompat } from '@eslint/eslintrc'
  
 const compat = new FlatCompat({
-  // import.meta.dirname is available after Node.js v20.11.0
   baseDirectory: import.meta.dirname,
 })
  
@@ -10,6 +9,9 @@ const eslintConfig = [
     extends: ['next'],
     plugins: ['import'],
   }),
+  {
+    ignores: ['.next/**', 'node_modules/**', 'out/**', 'build/**'],
+  },
   {
     rules: {
       'react/no-unescaped-entities': 'off',
@@ -26,6 +28,7 @@ const eslintConfig = [
       'import/no-self-import': 'error',
       'import/no-cycle': 'error',
       'import/no-useless-path-segments': 'error',
+      '@next/next/no-assign-module-variable': 'off',
     },
   },
 ]
