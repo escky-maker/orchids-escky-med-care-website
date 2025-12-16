@@ -1,3 +1,7 @@
+interface LogoProps {
+  className?: string;
+}
+
 export const Logo = ({ className = "w-12 h-12" }: LogoProps) => {
   return (
     <svg
