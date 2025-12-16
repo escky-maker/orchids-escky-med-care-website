@@ -95,13 +95,157 @@ const trustedSources = [
   },
 ];
 
+const videoResources = [
+  { 
+    title: "Prenatal Yoga for Beginners", 
+    duration: "15:24", 
+    premium: false,
+    url: "https://www.youtube.com/watch?v=c3JFJvliMEs",
+    thumbnail: "prenatal-yoga"
+  },
+  { 
+    title: "Newborn Care Essentials", 
+    duration: "22:18", 
+    premium: false,
+    url: "https://www.youtube.com/watch?v=kKCg_KJmYzI",
+    thumbnail: "newborn-care"
+  },
+  { 
+    title: "Breastfeeding Positions Guide", 
+    duration: "12:45", 
+    premium: false,
+    url: "https://www.youtube.com/watch?v=wjt-Ashodw8",
+    thumbnail: "breastfeeding"
+  },
+  { 
+    title: "Baby Sleep Training Methods", 
+    duration: "18:32", 
+    premium: false,
+    url: "https://www.youtube.com/watch?v=BHHKCbJjpZ4",
+    thumbnail: "sleep-training"
+  },
+  { 
+    title: "Understanding Contractions", 
+    duration: "10:15", 
+    premium: false,
+    url: "https://www.youtube.com/watch?v=4XLlKlS8bHY",
+    thumbnail: "contractions"
+  },
+  { 
+    title: "First Trimester Guide", 
+    duration: "16:40", 
+    premium: false,
+    url: "https://www.youtube.com/watch?v=c_8tFUhHFDg",
+    thumbnail: "first-trimester"
+  },
+  { 
+    title: "Postpartum Recovery Tips", 
+    duration: "14:22", 
+    premium: true,
+    url: "https://www.youtube.com/watch?v=vN7cT04PYxo",
+    thumbnail: "postpartum"
+  },
+  { 
+    title: "Baby-Led Weaning", 
+    duration: "20:10", 
+    premium: true,
+    url: "https://www.youtube.com/watch?v=if-9RvEPYRs",
+    thumbnail: "baby-led-weaning"
+  },
+  { 
+    title: "Toddler Development Milestones", 
+    duration: "19:55", 
+    premium: true,
+    url: "https://www.youtube.com/watch?v=R1qLLc_Kx2k",
+    thumbnail: "toddler-milestones"
+  },
+];
+
 const downloadableResources = [
-  { title: "Prenatal Visit Checklist", type: "PDF", size: "245 KB", premium: false },
-  { title: "Baby Milestone Tracker", type: "PDF", size: "312 KB", premium: true },
-  { title: "Vaccination Schedule Card", type: "PDF", size: "189 KB", premium: false },
-  { title: "Postpartum Recovery Guide", type: "PDF", size: "428 KB", premium: true },
-  { title: "Breastfeeding Log Template", type: "PDF", size: "156 KB", premium: true },
-  { title: "Baby Sleep Tracker", type: "PDF", size: "198 KB", premium: true },
+  { 
+    title: "Prenatal Visit Checklist", 
+    type: "PDF", 
+    size: "245 KB", 
+    premium: false,
+    description: "Complete checklist for all prenatal appointments"
+  },
+  { 
+    title: "CDC Vaccination Schedule", 
+    type: "PDF", 
+    size: "189 KB", 
+    premium: false,
+    description: "Official CDC immunization schedule for children 0-18 years"
+  },
+  { 
+    title: "Baby Feeding Log", 
+    type: "PDF", 
+    size: "156 KB", 
+    premium: false,
+    description: "Track breastfeeding and bottle feeding times"
+  },
+  { 
+    title: "Newborn Care Guide", 
+    type: "PDF", 
+    size: "512 KB", 
+    premium: false,
+    description: "Essential newborn care instructions from AAP"
+  },
+  { 
+    title: "Pregnancy Nutrition Guide", 
+    type: "PDF", 
+    size: "398 KB", 
+    premium: false,
+    description: "Dietary recommendations during pregnancy"
+  },
+  { 
+    title: "Baby Sleep Schedule", 
+    type: "PDF", 
+    size: "198 KB", 
+    premium: false,
+    description: "Age-appropriate sleep schedules and tips"
+  },
+  { 
+    title: "Milestone Development Tracker", 
+    type: "PDF", 
+    size: "312 KB", 
+    premium: true,
+    description: "Track your child's developmental milestones from birth to 5 years"
+  },
+  { 
+    title: "Postpartum Recovery Guide", 
+    type: "PDF", 
+    size: "428 KB", 
+    premium: true,
+    description: "Comprehensive postpartum care and recovery plan"
+  },
+  { 
+    title: "Breastfeeding Success Guide", 
+    type: "PDF", 
+    size: "375 KB", 
+    premium: true,
+    description: "Expert tips for successful breastfeeding"
+  },
+  { 
+    title: "Baby-Proofing Checklist", 
+    type: "PDF", 
+    size: "267 KB", 
+    premium: true,
+    description: "Complete home safety checklist for babies and toddlers"
+  },
+  { 
+    title: "Hospital Bag Checklist", 
+    type: "PDF", 
+    size: "198 KB", 
+    premium: true,
+    description: "Everything you need to pack for labor and delivery"
+  },
+  { 
+    title: "Diaper Change Log", 
+    type: "PDF", 
+    size: "145 KB", 
+    premium: true,
+    description: "Track your newborn's diaper output"
+  },
 ];
 
 const faqs = [
@@ -207,20 +351,24 @@ export default function ResourcesPage() {
                   Video Resources
                 </CardTitle>
                 <CardDescription>
-                  Educational videos on pregnancy and child care
+                  Educational YouTube videos on pregnancy and child care
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-3 gap-4">
-                  {[
-                    { title: "Prenatal Yoga Basics", duration: "15:24", premium: false },
-                    { title: "Newborn Care 101", duration: "22:18", premium: true },
-                    { title: "Breastfeeding Positions", duration: "12:45", premium: true },
-                  ].map((video, index) => (
-                    <div
+                  {videoResources.map((video, index) => (
+                    <a
                       key={index}
+                      href={video.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={`relative aspect-video bg-muted rounded-xl overflow-hidden group ${!video.premium || isPremium ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                      onClick={() => handlePremiumContent(video.premium)}
+                      onClick={(e) => {
+                        if (video.premium && !isPremium) {
+                          e.preventDefault();
+                          handlePremiumContent(video.premium);
+                        }
+                      }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       {video.premium && (
@@ -239,7 +387,7 @@ export default function ResourcesPage() {
                         <p className="text-sm font-medium text-white">{video.title}</p>
                         <p className="text-xs text-white/70">{video.duration}</p>
                       </div>
-                    </div>
+                    </a>
                   ))}
                 </div>
               </CardContent>
@@ -251,37 +399,40 @@ export default function ResourcesPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Download className="w-5 h-5 text-primary" />
-                  Downloadable Resources
+                  Downloadable Documents
                 </CardTitle>
                 <CardDescription>
-                  Printable checklists, trackers, and guides
+                  Printable checklists, trackers, and evidence-based guides
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid md:grid-cols-2 gap-3">
                   {downloadableResources.map((resource, index) => (
                     <div
                       key={index}
-                      className={`flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors ${!resource.premium || isPremium ? 'cursor-pointer' : 'cursor-not-allowed'} relative`}
+                      className={`p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors ${!resource.premium || isPremium ? 'cursor-pointer' : 'cursor-not-allowed'} relative`}
                       onClick={() => handlePremiumContent(resource.premium)}
                     >
                       {resource.premium && (
-                        <div className="absolute top-2 right-2">
+                        <div className="absolute top-3 right-3">
                           <div className="bg-amber-500/90 p-1 rounded-full">
                             <Lock className="w-3 h-3 text-white" />
                           </div>
                         </div>
                       )}
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0">
                           <FileText className="w-5 h-5 text-destructive" />
                         </div>
-                        <div>
-                          <p className="text-sm font-medium">{resource.title}</p>
-                          <p className="text-xs text-muted-foreground">{resource.type} • {resource.size}</p>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium mb-1">{resource.title}</p>
+                          <p className="text-xs text-muted-foreground mb-2">{resource.description}</p>
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs text-muted-foreground">{resource.type} • {resource.size}</p>
+                            <Download className="w-4 h-4 text-muted-foreground" />
+                          </div>
                         </div>
                       </div>
-                      <Download className="w-4 h-4 text-muted-foreground" />
                     </div>
                   ))}
                 </div>
