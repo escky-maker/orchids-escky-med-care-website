@@ -9,6 +9,10 @@ import {
   Target,
   ArrowRight,
   Lock,
+  Clock,
+  TrendingUp,
+  Droplets,
+  Baby,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -103,6 +107,330 @@ function DueDateCalculator() {
                 You are approximately <span className="font-semibold text-foreground">{weeksPregnant} weeks</span> pregnant
               </p>
             )}
+          </motion.div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function ContractionTimer() {
+  const [contractions, setContractions] = useState<{ startTime: Date; duration: number }[]>([]);
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [startTime, setStartTime] = useState<Date | null>(null);
+
+  const startContraction = () => {
+    setStartTime(new Date());
+    setIsTimerActive(true);
+  };
+
+  const endContraction = () => {
+    if (startTime) {
+      const duration = Math.floor((new Date().getTime() - startTime.getTime()) / 1000);
+      setContractions([{ startTime, duration }, ...contractions].slice(0, 10));
+      setIsTimerActive(false);
+      setStartTime(null);
+    }
+  };
+
+  const getAverageInterval = () => {
+    if (contractions.length < 2) return null;
+    let totalInterval = 0;
+    for (let i = 0; i < contractions.length - 1; i++) {
+      const interval = (contractions[i].startTime.getTime() - contractions[i + 1].startTime.getTime()) / 60000;
+      totalInterval += interval;
+    }
+    return (totalInterval / (contractions.length - 1)).toFixed(1);
+  };
+
+  return (
+    <Card id="contraction-timer">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Clock className="w-5 h-5 text-primary" />
+          Contraction Timer
+        </CardTitle>
+        <CardDescription>
+          Track your contractions to determine if it&apos;s time to go to the hospital.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex gap-3">
+          {!isTimerActive ? (
+            <Button onClick={startContraction} className="rounded-xl flex-1">
+              Start Contraction
+            </Button>
+          ) : (
+            <Button onClick={endContraction} variant="destructive" className="rounded-xl flex-1">
+              End Contraction
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            onClick={() => setContractions([])}
+            disabled={contractions.length === 0}
+            className="rounded-xl"
+          >
+            Clear
+          </Button>
+        </div>
+
+        {contractions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-3"
+          >
+            <div className="p-4 bg-primary/10 rounded-xl">
+              <p className="text-sm text-muted-foreground">Average Interval</p>
+              <p className="text-2xl font-bold text-primary">{getAverageInterval() || "—"} minutes</p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm font-medium">Recent Contractions</p>
+              {contractions.slice(0, 5).map((c, idx) => (
+                <div key={idx} className="flex justify-between p-2 bg-muted/50 rounded-lg text-sm">
+                  <span>{c.startTime.toLocaleTimeString()}</span>
+                  <span className="font-medium">{c.duration}s</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function KickCounter() {
+  const [kicks, setKicks] = useState(0);
+  const [startTime, setStartTime] = useState<Date | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
+
+  const addKick = () => {
+    if (!startTime) setStartTime(new Date());
+    const newKicks = kicks + 1;
+    setKicks(newKicks);
+    
+    if (newKicks === 10 && startTime) {
+      const durationMins = Math.floor((new Date().getTime() - startTime.getTime()) / 60000);
+      setDuration(durationMins);
+    }
+  };
+
+  const reset = () => {
+    setKicks(0);
+    setStartTime(null);
+    setDuration(null);
+  };
+
+  return (
+    <Card id="kick-counter">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Baby className="w-5 h-5 text-primary" />
+          Kick Counter
+        </CardTitle>
+        <CardDescription>
+          Track your baby&apos;s movements. Aim for 10 kicks within 2 hours.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="text-center py-8">
+          <motion.div
+            key={kicks}
+            initial={{ scale: 1.2 }}
+            animate={{ scale: 1 }}
+            className="text-6xl font-bold text-primary mb-2"
+          >
+            {kicks}
+          </motion.div>
+          <p className="text-muted-foreground">kicks counted</p>
+        </div>
+
+        <div className="flex gap-3">
+          <Button onClick={addKick} disabled={kicks >= 10} className="rounded-xl flex-1">
+            Add Kick
+          </Button>
+          <Button variant="outline" onClick={reset} className="rounded-xl">
+            Reset
+          </Button>
+        </div>
+
+        {duration && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 bg-primary/10 rounded-xl text-center"
+          >
+            <p className="text-sm text-muted-foreground">10 kicks reached in</p>
+            <p className="text-2xl font-bold text-primary">{duration} minutes</p>
+            <p className="text-xs text-muted-foreground mt-2">
+              {duration <= 120 ? "✓ Normal activity" : "⚠ Consider consulting your healthcare provider"}
+            </p>
+          </motion.div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function WaterIntakeTracker() {
+  const [glasses, setGlasses] = useState(0);
+  const target = 8;
+
+  return (
+    <Card id="water-tracker">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Droplets className="w-5 h-5 text-primary" />
+          Water Intake Tracker
+        </CardTitle>
+        <CardDescription>
+          Stay hydrated during pregnancy. Aim for 8-10 glasses per day.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="flex-1 bg-muted rounded-full h-4 overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${Math.min((glasses / target) * 100, 100)}%` }}
+              className="h-full bg-blue-500"
+            />
+          </div>
+          <span className="text-sm font-medium">{glasses}/{target}</span>
+        </div>
+
+        <div className="grid grid-cols-4 gap-2">
+          {Array.from({ length: 8 }).map((_, idx) => (
+            <motion.button
+              key={idx}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setGlasses(idx < glasses ? idx : idx + 1)}
+              className={`aspect-square rounded-lg border-2 flex items-center justify-center transition-colors ${
+                idx < glasses
+                  ? "bg-blue-500 border-blue-600 text-white"
+                  : "bg-muted border-muted-foreground/20"
+              }`}
+            >
+              <Droplets className="w-5 h-5" />
+            </motion.button>
+          ))}
+        </div>
+
+        <Button
+          variant="outline"
+          onClick={() => setGlasses(0)}
+          disabled={glasses === 0}
+          className="rounded-xl w-full"
+        >
+          Reset Daily Count
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+function PregnancyWeightGainChart() {
+  const [currentWeek, setCurrentWeek] = useState("");
+  const [currentWeight, setCurrentWeight] = useState("");
+  const [prePregnancyWeight, setPrePregnancyWeight] = useState("");
+  const [bmiCategory, setBmiCategory] = useState<string | null>(null);
+
+  const calculateRecommendation = () => {
+    const week = parseInt(currentWeek);
+    const weight = parseFloat(currentWeight);
+    const preWeight = parseFloat(prePregnancyWeight);
+
+    if (!week || !weight || !preWeight) return;
+
+    const heightDefault = 165;
+    const bmi = preWeight / ((heightDefault / 100) ** 2);
+    
+    let category = "";
+    let expectedGainMin = 0;
+    let expectedGainMax = 0;
+
+    if (bmi < 18.5) {
+      category = "Underweight";
+      expectedGainMin = (28 / 40) * week;
+      expectedGainMax = (40 / 40) * week;
+    } else if (bmi < 25) {
+      category = "Normal weight";
+      expectedGainMin = (25 / 40) * week;
+      expectedGainMax = (35 / 40) * week;
+    } else if (bmi < 30) {
+      category = "Overweight";
+      expectedGainMin = (15 / 40) * week;
+      expectedGainMax = (25 / 40) * week;
+    } else {
+      category = "Obese";
+      expectedGainMin = (11 / 40) * week;
+      expectedGainMax = (20 / 40) * week;
+    }
+
+    const actualGain = weight - preWeight;
+    setBmiCategory(`${category}: Expected ${expectedGainMin.toFixed(1)}-${expectedGainMax.toFixed(1)} lbs (Current: ${actualGain.toFixed(1)} lbs)`);
+  };
+
+  return (
+    <Card id="weight-gain-chart">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <TrendingUp className="w-5 h-5 text-primary" />
+          Pregnancy Weight Gain Tracker
+        </CardTitle>
+        <CardDescription>
+          Monitor your weight gain against recommended guidelines.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="pre-weight">Pre-pregnancy Weight (lbs)</Label>
+            <Input
+              id="pre-weight"
+              type="number"
+              placeholder="130"
+              value={prePregnancyWeight}
+              onChange={(e) => setPrePregnancyWeight(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="current-weight">Current Weight (lbs)</Label>
+            <Input
+              id="current-weight"
+              type="number"
+              placeholder="145"
+              value={currentWeight}
+              onChange={(e) => setCurrentWeight(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="week">Current Week</Label>
+            <Input
+              id="week"
+              type="number"
+              placeholder="20"
+              value={currentWeek}
+              onChange={(e) => setCurrentWeek(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <Button onClick={calculateRecommendation} className="rounded-xl">
+          Check Progress
+          <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
+
+        {bmiCategory && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 bg-primary/10 rounded-xl"
+          >
+            <p className="text-sm text-muted-foreground mb-1">Weight Gain Status</p>
+            <p className="text-base font-semibold">{bmiCategory}</p>
           </motion.div>
         )}
       </CardContent>
@@ -459,6 +787,22 @@ export default function ToolsPage() {
         <div className="space-y-8">
           <motion.div variants={itemVariants}>
             <DueDateCalculator />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <ContractionTimer />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <KickCounter />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <WaterIntakeTracker />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <PregnancyWeightGainChart />
           </motion.div>
 
           <motion.div variants={itemVariants}>
