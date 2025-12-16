@@ -13,6 +13,9 @@ import {
   TrendingUp,
   Droplets,
   Baby,
+  Stethoscope,
+  Send,
+  Loader2,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,6 +30,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 
 const containerVariants = {
@@ -763,6 +767,194 @@ function MilestoneTracker() {
   );
 }
 
+function DoctorConsultation() {
+  const { isPremium } = useSubscription();
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+  const [messages, setMessages] = useState<{ role: "user" | "doctor"; content: string }[]>([
+    {
+      role: "doctor",
+      content: "Hello! I'm here to help with your maternal and child health questions. Please describe your concern, and I'll provide professional medical guidance. Remember, for emergencies, please call your local emergency number or visit the nearest hospital.",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isPremium) {
+      setShowUpgradeDialog(true);
+      return;
+    }
+
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = input.trim();
+    setInput("");
+    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: messages.map(m => ({ role: m.role === "doctor" ? "assistant" : "user", content: m.content })).concat({ role: "user", content: userMessage }),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "doctor",
+            content: data.error || "I'm having trouble responding right now. Please try again in a moment.",
+          },
+        ]);
+      } else {
+        setMessages((prev) => [...prev, { role: "doctor", content: data.message }]);
+      }
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "doctor",
+          content: "I'm having trouble connecting right now. Please check your internet connection and try again.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <Card id="doctor-consultation" className={!isPremium ? "relative" : ""}>
+        {!isPremium && (
+          <div className="absolute top-3 right-3 z-10">
+            <div className="bg-amber-500/90 p-2 rounded-full">
+              <Lock className="w-4 h-4 text-white" />
+            </div>
+          </div>
+        )}
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Stethoscope className="w-5 h-5 text-primary" />
+            Doctor Consultation
+            {!isPremium && (
+              <span className="ml-auto text-xs bg-amber-500/10 text-amber-600 px-2 py-1 rounded-full">
+                Premium Only
+              </span>
+            )}
+          </CardTitle>
+          <CardDescription>
+            Chat with our AI health assistant for professional maternal and child health guidance.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {!isPremium ? (
+            <div className="opacity-50 pointer-events-none">
+              <div className="h-[400px] bg-muted/50 rounded-lg flex items-center justify-center">
+                <p className="text-muted-foreground">Premium feature - Upgrade to access</p>
+              </div>
+            </div>
+          ) : (
+            <>
+              <ScrollArea className="h-[400px] border rounded-lg p-4">
+                <div className="space-y-4">
+                  {messages.map((msg, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                    >
+                      <div
+                        className={`max-w-[85%] px-4 py-3 rounded-2xl ${
+                          msg.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted"
+                        }`}
+                      >
+                        <p className="text-sm leading-relaxed">{msg.content}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                  {isLoading && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex justify-start"
+                    >
+                      <div className="bg-muted px-4 py-3 rounded-2xl">
+                        <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </ScrollArea>
+              <form onSubmit={handleSubmit} className="flex gap-2">
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Type your health question..."
+                  disabled={isLoading}
+                  className="flex-1"
+                />
+                <Button
+                  type="submit"
+                  disabled={isLoading || !input.trim()}
+                  className="rounded-xl"
+                >
+                  <Send className="w-4 h-4" />
+                </Button>
+              </form>
+              <p className="text-xs text-muted-foreground text-center">
+                This is for informational purposes only. Always consult a healthcare provider for medical advice.
+              </p>
+            </>
+          )}
+          {!isPremium && (
+            <Button onClick={() => setShowUpgradeDialog(true)} className="w-full rounded-xl">
+              Upgrade to Access Doctor Consultation
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+
+      <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="w-5 h-5 text-amber-600" />
+              Premium Feature
+            </DialogTitle>
+            <DialogDescription>
+              Doctor Consultation is only available to premium subscribers. Get unlimited access to professional health guidance, personalized advice, and instant support.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-4">
+            <Link href="/pricing">
+              <Button className="w-full rounded-xl">
+                Upgrade to Premium
+              </Button>
+            </Link>
+            <Button 
+              variant="outline" 
+              className="w-full rounded-xl"
+              onClick={() => setShowUpgradeDialog(false)}
+            >
+              Maybe Later
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
 export default function ToolsPage() {
   return (
     <div className="min-h-screen py-8 px-6 lg:px-12">
@@ -811,6 +1003,10 @@ export default function ToolsPage() {
 
           <motion.div variants={itemVariants}>
             <MilestoneTracker />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <DoctorConsultation />
           </motion.div>
         </div>
       </motion.div>
