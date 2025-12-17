@@ -1476,14 +1476,6 @@ function AntenatalPage() {
     );
   }
 
-export default function AntenatalPageWrapper() {
-  return (
-    <ProtectedRoute>
-      <AntenatalPage />
-    </ProtectedRoute>
-  );
-}
-
   return (
     <div className="min-h-screen py-8 px-6 lg:px-12">
       <motion.div
