@@ -12,6 +12,48 @@ export function SplashScreen() {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
       
       <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
+        className="absolute left-8 md:left-16 lg:left-24 bottom-12 md:bottom-20 z-0"
+      >
+        <div className="relative">
+          <div className="absolute inset-0 bg-rose-300/30 rounded-full blur-3xl"></div>
+          <svg className="w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-2xl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 30 C80 30 65 45 65 65 C65 85 80 100 100 120 C120 100 135 85 135 65 C135 45 120 30 100 30 Z M100 60 C92 60 85 67 85 75 L85 95 L75 95 C75 95 75 85 75 75 C75 61 87 50 100 50 C113 50 125 61 125 75 L125 95 L115 95 L115 75 C115 67 108 60 100 60 Z" fill="white" opacity="0.9"/>
+            <ellipse cx="100" cy="145" rx="35" ry="45" fill="white" opacity="0.9"/>
+            <circle cx="95" cy="140" r="3" fill="#ef4444"/>
+            <circle cx="105" cy="140" r="3" fill="#ef4444"/>
+            <path d="M95 150 Q100 155 105 150" stroke="#ef4444" strokeWidth="2" fill="none"/>
+            <circle cx="55" cy="175" r="12" fill="white" opacity="0.85"/>
+            <circle cx="52" cy="173" r="2" fill="#ef4444"/>
+            <circle cx="58" cy="173" r="2" fill="#ef4444"/>
+            <path d="M52 178 Q55 180 58 178" stroke="#ef4444" strokeWidth="1.5" fill="none"/>
+          </svg>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="absolute right-8 md:right-16 lg:right-24 top-20 md:top-32 z-0"
+      >
+        <div className="relative">
+          <div className="absolute inset-0 bg-amber-300/30 rounded-full blur-3xl"></div>
+          <svg className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 drop-shadow-2xl" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="75" cy="90" rx="28" ry="35" fill="white" opacity="0.9"/>
+            <circle cx="75" cy="45" r="22" fill="white" opacity="0.9"/>
+            <circle cx="72" cy="42" r="3" fill="#f59e0b"/>
+            <circle cx="78" cy="42" r="3" fill="#f59e0b"/>
+            <path d="M70 50 Q75 54 80 50" stroke="#f59e0b" strokeWidth="2" fill="none"/>
+            <path d="M60 50 Q55 45 50 50" stroke="white" strokeWidth="4" fill="none" opacity="0.9"/>
+            <path d="M90 50 Q95 45 100 50" stroke="white" strokeWidth="4" fill="none" opacity="0.9"/>
+          </svg>
+        </div>
+      </motion.div>
+      
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
