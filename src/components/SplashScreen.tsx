@@ -89,16 +89,16 @@ export function SplashScreen() {
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </Button>
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="border-2 border-white text-white hover:bg-white/15 backdrop-blur-md font-bold text-lg px-8 py-6"
-          >
-            <Link href="/login">
-              Sign In
-            </Link>
-          </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-2 border-white text-white hover:bg-white/15 backdrop-blur-md font-bold text-lg px-8 py-6"
+            >
+              <Link href="/login">
+                <span className="text-pink-200">Sign In</span>
+              </Link>
+            </Button>
         </motion.div>
 
         <motion.p
