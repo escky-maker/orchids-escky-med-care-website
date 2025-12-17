@@ -93,6 +93,7 @@ export default function SignUpPage() {
         password: password,
       });
 
+      localStorage.removeItem(FORM_STORAGE_KEY);
       setSuccess(true);
       setTimeout(() => {
         router.push("/");
