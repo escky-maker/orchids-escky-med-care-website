@@ -186,13 +186,15 @@ function StripeCheckoutForm({
                 setExpressCheckoutReady(true);
               }
             }}
-            options={{
-              buttonType: {
-                applePay: "subscribe",
-                googlePay: "subscribe",
-                paypal: "subscribe",
-              },
-            }}
+              options={{
+                buttonType: {
+                  applePay: "subscribe",
+                  googlePay: "subscribe",
+                  // PayPal does not support "subscribe" button type in Express Checkout.
+                  // Allowed values: "paypal", "checkout", "buynow", "pay".
+                  paypal: "paypal",
+                },
+              }}
           />
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
