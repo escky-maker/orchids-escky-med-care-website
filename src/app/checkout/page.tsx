@@ -81,14 +81,12 @@ function StripeCheckoutForm({
   clientSecret, 
   subscriptionId, 
   customerId,
-  planId,
-  email
+  planId 
 }: { 
   clientSecret: string; 
   subscriptionId: string;
   customerId: string;
   planId: string;
-  email: string;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -140,7 +138,7 @@ function StripeCheckoutForm({
     }
 
     if (paymentIntent?.status === "succeeded") {
-      handlePaymentSuccess(email);
+      handlePaymentSuccess();
     }
 
     setIsProcessing(false);
@@ -167,7 +165,7 @@ function StripeCheckoutForm({
     }
 
     if (paymentIntent?.status === "succeeded") {
-      handlePaymentSuccess(email);
+      handlePaymentSuccess();
     }
 
     setIsProcessing(false);
@@ -978,7 +976,6 @@ function CheckoutContent() {
                               subscriptionId={subscriptionId!}
                               customerId={customerId!}
                               planId={planId}
-                              email={email}
                             />
                           </Elements>
                         ) : selectedMethod === "card" ? (
