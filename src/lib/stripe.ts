@@ -5,20 +5,28 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export const PLANS = {
+  christmas: {
+    id: "christmas",
+    name: "Christmas Special",
+    price: 499,
+    interval: "month" as const,
+    description: "Limited December offer - Reverts to $7.99/mo after",
+    originalPrice: 799,
+  },
   monthly: {
     id: "monthly",
     name: "Monthly Premium",
-    price: 2500,
+    price: 799,
     interval: "month" as const,
     description: "Full access to all premium features",
   },
   annual: {
     id: "annual",
     name: "Annual Premium",
-    price: 28500,
+    price: 9108,
     interval: "year" as const,
     description: "Full access to all premium features - Save 5%!",
-    originalPrice: 30000,
+    originalPrice: 9588,
   },
 } as const;
 
