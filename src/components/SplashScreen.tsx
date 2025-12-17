@@ -11,27 +11,42 @@ export function SplashScreen() {
     <div className="min-h-screen bg-gradient-to-br from-orange-600 via-rose-600 to-pink-700 dark:from-orange-900 dark:via-rose-900 dark:to-pink-900 flex items-center justify-center px-6 py-12 overflow-hidden relative">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
       
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-        className="absolute left-8 md:left-16 lg:left-24 bottom-12 md:bottom-20 z-0"
-      >
-        <div className="relative">
-          <div className="absolute inset-0 bg-rose-300/30 rounded-full blur-3xl"></div>
-          <svg className="w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-2xl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path d="M100 30 C80 30 65 45 65 65 C65 85 80 100 100 120 C120 100 135 85 135 65 C135 45 120 30 100 30 Z M100 60 C92 60 85 67 85 75 L85 95 L75 95 C75 95 75 85 75 75 C75 61 87 50 100 50 C113 50 125 61 125 75 L125 95 L115 95 L115 75 C115 67 108 60 100 60 Z" fill="white" opacity="0.9"/>
-            <ellipse cx="100" cy="145" rx="35" ry="45" fill="white" opacity="0.9"/>
-            <circle cx="95" cy="140" r="3" fill="#ef4444"/>
-            <circle cx="105" cy="140" r="3" fill="#ef4444"/>
-            <path d="M95 150 Q100 155 105 150" stroke="#ef4444" strokeWidth="2" fill="none"/>
-            <circle cx="55" cy="175" r="12" fill="white" opacity="0.85"/>
-            <circle cx="52" cy="173" r="2" fill="#ef4444"/>
-            <circle cx="58" cy="173" r="2" fill="#ef4444"/>
-            <path d="M52 178 Q55 180 58 178" stroke="#ef4444" strokeWidth="1.5" fill="none"/>
-          </svg>
-        </div>
-      </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: -50, rotateY: -25 }}
+          animate={{ opacity: 1, x: 0, rotateY: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="absolute left-8 md:left-16 lg:left-24 bottom-12 md:bottom-20 z-0"
+          style={{ perspective: "1000px" }}
+        >
+          <div className="relative" style={{ transformStyle: "preserve-3d", transform: "rotateY(-8deg) rotateX(3deg)" }}>
+            <div className="absolute inset-0 bg-rose-300/30 rounded-full blur-3xl" style={{ transform: "translateZ(-30px)" }}></div>
+            <svg className="w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(8px 12px 20px rgba(244, 63, 94, 0.4)) drop-shadow(-4px -6px 15px rgba(251, 207, 232, 0.3))", transform: "translateZ(0px)" }}>
+              <defs>
+                <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: "#ffffff", stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: "#fecdd3", stopOpacity: 0.9 }} />
+                </linearGradient>
+                <radialGradient id="bellyGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" style={{ stopColor: "#fda4af", stopOpacity: 0.5 }} />
+                  <stop offset="100%" style={{ stopColor: "#fb7185", stopOpacity: 0 }} />
+                </radialGradient>
+              </defs>
+              <ellipse cx="100" cy="110" rx="38" ry="25" fill="#fda4af" opacity="0.2" style={{ transform: "translateY(80px)" }} />
+              <path d="M100 30 C80 30 65 45 65 65 C65 85 80 100 100 120 C120 100 135 85 135 65 C135 45 120 30 100 30 Z M100 60 C92 60 85 67 85 75 L85 95 L75 95 C75 95 75 85 75 75 C75 61 87 50 100 50 C113 50 125 61 125 75 L125 95 L115 95 L115 75 C115 67 108 60 100 60 Z" fill="url(#bodyGradient)" style={{ filter: "drop-shadow(2px 3px 4px rgba(244, 63, 94, 0.3))" }}/>
+              <ellipse cx="100" cy="145" rx="35" ry="45" fill="url(#bodyGradient)" style={{ filter: "drop-shadow(3px 5px 6px rgba(244, 63, 94, 0.3))" }}/>
+              <ellipse cx="100" cy="130" rx="30" ry="35" fill="url(#bellyGlow)" />
+              <circle cx="95" cy="140" r="3" fill="#ef4444" style={{ filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3))" }}/>
+              <circle cx="105" cy="140" r="3" fill="#ef4444" style={{ filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3))" }}/>
+              <path d="M95 150 Q100 155 105 150" stroke="#ef4444" strokeWidth="2" fill="none" style={{ filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2))" }}/>
+              <circle cx="55" cy="175" r="12" fill="url(#bodyGradient)" style={{ filter: "drop-shadow(2px 3px 4px rgba(244, 63, 94, 0.3))" }}/>
+              <circle cx="52" cy="173" r="2" fill="#ef4444" style={{ filter: "drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3))" }}/>
+              <circle cx="58" cy="173" r="2" fill="#ef4444" style={{ filter: "drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3))" }}/>
+              <path d="M52 178 Q55 180 58 178" stroke="#ef4444" strokeWidth="1.5" fill="none"/>
+              <ellipse cx="90" cy="48" rx="8" ry="6" fill="#fda4af" opacity="0.4" />
+              <ellipse cx="110" cy="48" rx="8" ry="6" fill="#fda4af" opacity="0.4" />
+            </svg>
+          </div>
+        </motion.div>
 
       <motion.div
         initial={{ opacity: 0, x: 50 }}
