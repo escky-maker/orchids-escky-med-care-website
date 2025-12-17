@@ -81,12 +81,14 @@ function StripeCheckoutForm({
   clientSecret, 
   subscriptionId, 
   customerId,
-  planId 
+  planId,
+  email
 }: { 
   clientSecret: string; 
   subscriptionId: string;
   customerId: string;
   planId: string;
+  email: string;
 }) {
   const stripe = useStripe();
   const elements = useElements();
