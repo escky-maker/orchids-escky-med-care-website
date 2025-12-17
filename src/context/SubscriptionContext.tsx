@@ -38,6 +38,14 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
 
   const refreshSubscription = async () => {
     try {
+      const resetFlag = localStorage.getItem("admin_reset_subscriptions");
+      if (resetFlag) {
+        localStorage.removeItem("escky_subscription");
+        setSubscriptionState(defaultSubscription);
+        setIsLoading(false);
+        return;
+      }
+
       const stored = localStorage.getItem("escky_subscription");
       if (stored) {
         const data = JSON.parse(stored);
