@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { isPremiumUser } from "@/lib/subscription";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -33,7 +34,23 @@ Remember: You are a supportive resource, not a replacement for professional heal
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json();
+    const { messages, email } = await req.json();
+
+    if (!email) {
+      return NextResponse.json(
+        { error: "Email is required to use the AI chatbot." },
+        { status: 400 }
+      );
+    }
+
+    const hasPremiumAccess = await isPremiumUser(email);
+
+    if (!hasPremiumAccess) {
+      return NextResponse.json(
+        { error: "Premium subscription required. Please upgrade to access the AI Health Chatbot." },
+        { status: 403 }
+      );
+    }
 
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(

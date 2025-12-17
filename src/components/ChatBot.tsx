@@ -57,13 +57,16 @@ export function ChatBot() {
     }
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [...messages, { role: "user", content: userMessage }],
-        }),
-      });
+        const userEmail = localStorage.getItem("escky_user_email");
+        
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [...messages, { role: "user", content: userMessage }],
+            email: userEmail,
+          }),
+        });
 
       const data = await response.json();
 

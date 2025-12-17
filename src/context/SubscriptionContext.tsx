@@ -41,17 +41,33 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       const resetFlag = localStorage.getItem("admin_reset_subscriptions");
       if (resetFlag) {
         localStorage.removeItem("escky_subscription");
+        localStorage.removeItem("escky_user_email");
         setSubscriptionState(defaultSubscription);
         setIsLoading(false);
         return;
       }
 
+      const userEmail = localStorage.getItem("escky_user_email");
+      if (!userEmail) {
+        setSubscriptionState(defaultSubscription);
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await fetch(`/api/subscription?email=${encodeURIComponent(userEmail)}`);
+      if (response.ok) {
+        const data = await response.json();
+        setSubscriptionState(data);
+        localStorage.setItem("escky_subscription", JSON.stringify(data));
+      } else {
+        setSubscriptionState(defaultSubscription);
+      }
+    } catch {
       const stored = localStorage.getItem("escky_subscription");
       if (stored) {
         const data = JSON.parse(stored);
         setSubscriptionState(data);
       }
-    } catch {
     } finally {
       setIsLoading(false);
     }
