@@ -1,4 +1,5 @@
 "use client";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -47,7 +48,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function AppDownloadPage() {
+function AppDownloadPage() {
   const handleDownload = (platform: "ios" | "android") => {
     if (platform === "ios") {
       window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://apps.apple.com/app/escky-med-care" } }, "*");
@@ -202,5 +203,13 @@ export default function AppDownloadPage() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+export default function AppPageWrapper() {
+  return (
+    <ProtectedRoute>
+      <AppDownloadPage />
+    </ProtectedRoute>
   );
 }
