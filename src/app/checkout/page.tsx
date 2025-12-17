@@ -81,12 +81,14 @@ function StripeCheckoutForm({
   clientSecret, 
   subscriptionId, 
   customerId,
-  planId 
+  planId,
+  email
 }: { 
   clientSecret: string; 
   subscriptionId: string;
   customerId: string;
   planId: string;
+  email: string;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -96,7 +98,8 @@ function StripeCheckoutForm({
   const [success, setSuccess] = useState(false);
   const [expressCheckoutReady, setExpressCheckoutReady] = useState(false);
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = (userEmail: string) => {
+    localStorage.setItem("escky_user_email", userEmail);
     setSubscription({
       status: "active",
       plan: planId,
@@ -137,7 +140,7 @@ function StripeCheckoutForm({
     }
 
     if (paymentIntent?.status === "succeeded") {
-      handlePaymentSuccess();
+      handlePaymentSuccess(email);
     }
 
     setIsProcessing(false);
@@ -164,7 +167,7 @@ function StripeCheckoutForm({
     }
 
     if (paymentIntent?.status === "succeeded") {
-      handlePaymentSuccess();
+      handlePaymentSuccess(email);
     }
 
     setIsProcessing(false);
@@ -975,6 +978,7 @@ function CheckoutContent() {
                               subscriptionId={subscriptionId!}
                               customerId={customerId!}
                               planId={planId}
+                              email={email}
                             />
                           </Elements>
                         ) : selectedMethod === "card" ? (
