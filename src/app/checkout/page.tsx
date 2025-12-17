@@ -19,20 +19,28 @@ import { useSubscription } from "@/context/SubscriptionContext";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const PLANS = {
+  christmas: {
+    id: "christmas",
+    name: "Christmas Special",
+    price: 4.99,
+    interval: "month",
+    description: "Limited December offer - Reverts to $7.99/mo after",
+    originalPrice: 7.99,
+  },
   monthly: {
     id: "monthly",
     name: "Monthly Premium",
-    price: 25,
+    price: 7.99,
     interval: "month",
     description: "Billed monthly",
   },
   annual: {
     id: "annual",
     name: "Annual Premium",
-    price: 285,
+    price: 91.08,
     interval: "year",
     description: "Billed yearly - Save 5%",
-    originalPrice: 300,
+    originalPrice: 95.88,
   },
 } as const;
 
