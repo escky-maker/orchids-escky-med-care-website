@@ -260,14 +260,14 @@ export default function SignUpPage() {
                     <Input
                       id="code"
                       type="text"
-                      placeholder="Enter 6-digit code"
+                      placeholder="Enter 8-digit code"
                       value={verificationCode}
                       onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                        const value = e.target.value.replace(/\D/g, '').slice(0, 8);
                         setVerificationCode(value);
                       }}
                       className="pl-10 text-center text-2xl tracking-widest font-bold"
-                      maxLength={6}
+                      maxLength={8}
                       required
                     />
                   </div>
