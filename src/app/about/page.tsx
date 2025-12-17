@@ -1,4 +1,5 @@
 "use client";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import { motion } from "framer-motion";
 import {
@@ -87,7 +88,7 @@ const stats = [
   { value: "24/7", label: "Resource Access" },
 ];
 
-export default function AboutPage() {
+function AboutPage() {
   return (
     <div className="min-h-screen py-8 px-6 lg:px-12">
       <motion.div
@@ -253,5 +254,13 @@ export default function AboutPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function AboutPageWrapper() {
+  return (
+    <ProtectedRoute>
+      <AboutPage />
+    </ProtectedRoute>
   );
 }

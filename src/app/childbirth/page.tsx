@@ -1,4 +1,5 @@
 "use client";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import { motion } from "framer-motion";
 import {
@@ -428,7 +429,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function ChildbirthPage() {
+function ChildbirthPage() {
   return (
     <div className="min-h-screen py-8 px-6 lg:px-12">
       <motion.div
@@ -1486,5 +1487,12 @@ export default function ChildbirthPage() {
         </Tabs>
       </motion.div>
     </div>
+  );
+}
+export default function ChildbirthPageWrapper() {
+  return (
+    <ProtectedRoute>
+      <ChildbirthPage />
+    </ProtectedRoute>
   );
 }

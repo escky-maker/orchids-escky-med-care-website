@@ -1,4 +1,5 @@
 "use client";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -8,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import Link from "next/link";
 import { useSubscription } from "@/context/SubscriptionContext";
 
-export default function AccountPage() {
+function AccountPage() {
   const { subscription, isPremium, isLoading, setSubscription } = useSubscription();
   const [actionLoading, setActionLoading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -236,5 +237,13 @@ export default function AccountPage() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+export default function AccountPageWrapper() {
+  return (
+    <ProtectedRoute>
+      <AccountPage />
+    </ProtectedRoute>
   );
 }

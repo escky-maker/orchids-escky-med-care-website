@@ -1,4 +1,5 @@
 "use client";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import { motion } from "framer-motion";
 import {
@@ -267,7 +268,7 @@ const faqs = [
   },
 ];
 
-export default function ResourcesPage() {
+function ResourcesPage() {
   const { isPremium } = useSubscription();
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
 
@@ -569,5 +570,12 @@ export default function ResourcesPage() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+export default function ResourcesPageWrapper() {
+  return (
+    <ProtectedRoute>
+      <ResourcesPage />
+    </ProtectedRoute>
   );
 }

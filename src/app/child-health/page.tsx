@@ -1,4 +1,5 @@
 "use client";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -106,7 +107,7 @@ const categoryColors: Record<string, string> = {
   Feeding: "bg-amber-500/10 text-amber-600",
 };
 
-export default function ChildHealthPage() {
+function ChildHealthPage() {
   const [selectedAge, setSelectedAge] = useState<string>("2 months");
 
   return (
@@ -520,5 +521,12 @@ export default function ChildHealthPage() {
         </Tabs>
       </motion.div>
     </div>
+  );
+}
+export default function ChildHealthPageWrapper() {
+  return (
+    <ProtectedRoute>
+      <ChildHealthPage />
+    </ProtectedRoute>
   );
 }

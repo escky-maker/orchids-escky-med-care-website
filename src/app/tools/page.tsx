@@ -1,4 +1,5 @@
 "use client";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -955,7 +956,7 @@ function DoctorConsultation() {
   );
 }
 
-export default function ToolsPage() {
+function ToolsPage() {
   return (
     <div className="min-h-screen py-8 px-6 lg:px-12">
       <motion.div
@@ -1011,5 +1012,12 @@ export default function ToolsPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+export default function ToolsPageWrapper() {
+  return (
+    <ProtectedRoute>
+      <ToolsPage />
+    </ProtectedRoute>
   );
 }
