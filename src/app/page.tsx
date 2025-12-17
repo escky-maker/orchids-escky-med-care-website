@@ -321,69 +321,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="relative h-[600px] overflow-hidden">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="https://cdn.coverr.co/videos/coverr-pregnant-woman-touching-her-belly-7933/1080p.mp4" type="video/mp4" />
-        </video>
-        
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
-        
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={containerVariants}
-          className="relative h-full flex items-center justify-center px-6 lg:px-12"
-        >
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              variants={itemVariants}
-              className="mb-6"
-            >
-              <Heart className="w-20 h-20 text-rose-400 mx-auto mb-6 animate-pulse" />
-            </motion.div>
-            
-            <motion.h2
-              variants={itemVariants}
-              className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight"
-              style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
-            >
-              Every Moment Matters
-            </motion.h2>
-            
-            <motion.p
-              variants={itemVariants}
-              className="text-xl md:text-2xl text-white/95 mb-8 max-w-2xl mx-auto leading-relaxed"
-            >
-              From pregnancy to childhood, we&apos;re here to support you with trusted medical guidance, 
-              personalized tools, and a caring community.
-            </motion.p>
-            
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap justify-center gap-4"
-            >
-              <Button asChild size="lg" className="font-bold bg-rose-500 hover:bg-rose-600 text-white shadow-2xl">
-                <Link href="/signup">
-                  Join Our Community
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="font-bold border-2 border-white text-white hover:bg-white/20 backdrop-blur-md">
-                <Link href="/tools">
-                  Explore Tools
-                </Link>
-              </Button>
-            </motion.div>
-          </div>
-        </motion.div>
-      </section>
+
 
       <footer className="py-10 px-6 lg:px-12 border-t bg-slate-50 dark:bg-slate-950 dark:border-slate-800">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
