@@ -140,7 +140,7 @@ function StripeCheckoutForm({
     }
 
     if (paymentIntent?.status === "succeeded") {
-      handlePaymentSuccess();
+      handlePaymentSuccess(email);
     }
 
     setIsProcessing(false);
@@ -167,7 +167,7 @@ function StripeCheckoutForm({
     }
 
     if (paymentIntent?.status === "succeeded") {
-      handlePaymentSuccess();
+      handlePaymentSuccess(email);
     }
 
     setIsProcessing(false);
@@ -755,6 +755,7 @@ function CheckoutContent() {
   };
 
   const handleAltPaymentSuccess = () => {
+    localStorage.setItem("escky_user_email", email);
     setSubscription({
       status: "active",
       plan: planId,
